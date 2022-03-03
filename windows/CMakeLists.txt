@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
-project(continual_care LANGUAGES CXX)
+project(test LANGUAGES CXX)
 
-set(BINARY_NAME "continual_care")
+set(BINARY_NAME "test")
 
 cmake_policy(SET CMP0063 NEW)
 
