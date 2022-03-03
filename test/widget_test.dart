@@ -11,5 +11,11 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:continual_care/main.dart';
 
 void main() {
- 
+  testWidgets('Image diplays', (WidgetTester tester) async {
+    // Build our app and trigger a frame.
+    await tester.pumpWidget(const App());
+
+    expect(find.byWidget(Image.asset('/assets/logo_dark_clean.png')), findsNothing);
+
+  });
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:transparent_image/transparent_image.dart';
 
-
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
 
@@ -14,7 +13,6 @@ class App extends StatelessWidget {
           accentColor: const Color(0xFF13B9FF),
         ),
       ),
-     
       home: const SplashLogo(),
     );
   }
@@ -46,9 +44,8 @@ class SplashLogo extends StatelessWidget {
             children: <Widget>[
               const Center(child: CircularProgressIndicator()),
               Center(
-                child: FadeInImage.memoryNetwork(
-                  placeholder: kTransparentImage,
-                  image: 'assets/logo_dark_clean.png',
+                child: Image.asset(
+                  'assets/logo_dark_clean.png',
                 ),
               ),
             ],
