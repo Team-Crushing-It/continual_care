@@ -7,14 +7,19 @@ environment:
   sdk: ">=2.16.0 <3.0.0"
 
 dependencies:
+  authentication_repository:
+    path: packages/authentication_repository
   bloc: ^8.0.2
   equatable: ^2.0.3
-  flow_builder: ^0.0.6
+  flow_builder: ^0.0.9
   flutter:
     sdk: flutter
   flutter_bloc: ^8.0.1
   flutter_localizations:
     sdk: flutter
+  font_awesome_flutter: ^9.1.0
+  form_inputs:
+    path: packages/form_inputs
   intl: ^0.17.0
   transparent_image: ^2.0.0
 
@@ -29,4 +34,4 @@ flutter:
   uses-material-design: true
   generate: true
   assets:
-    - assets/logo_dark_clean.png
+    - assets/

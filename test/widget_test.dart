@@ -9,11 +9,11 @@ import 'package:continual_care/app/app.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets('Fake test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const App());
+  // testWidgets('Fake test', (WidgetTester tester) async {
+  //   // Build our app and trigger a frame.
+  //   await tester.pumpWidget(const App());
 
-    expect(find.text('1'), findsNothing);
+  //   expect(find.text('1'), findsNothing);
 
-  });
+  // });
 }
