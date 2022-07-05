@@ -33,14 +33,14 @@ class LoginForm extends StatelessWidget {
                 height: 120,
               ),
               const SizedBox(height: 16),
-              _EmailInput(),
+              Padding(padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10), child: _EmailInput()),
               const SizedBox(height: 8),
-              _PasswordInput(),
-              const SizedBox(height: 8),
+              Padding(padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10), child: _PasswordInput()),
+              const SizedBox(height: 42),
               _LoginButton(),
-              const SizedBox(height: 8),
+              const SizedBox(height: 32),
               _GoogleLoginButton(),
-              const SizedBox(height: 4),
+              const SizedBox(height: 16),
               _SignUpButton(),
             ],
           ),
@@ -103,12 +103,6 @@ class _LoginButton extends StatelessWidget {
             ? const CircularProgressIndicator()
             : ElevatedButton(
                 key: const Key('loginForm_continue_raisedButton'),
-                style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  primary: const Color(0xFFFFD600),
-                ),
                 onPressed: state.status.isValidated
                     ? () => context.read<LoginCubit>().logInWithCredentials()
                     : null,
@@ -129,12 +123,6 @@ class _GoogleLoginButton extends StatelessWidget {
         'SIGN IN WITH GOOGLE',
         style: TextStyle(color: Colors.white),
       ),
-      style: ElevatedButton.styleFrom(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
-        ),
-        primary: theme.colorScheme.secondary,
-      ),
       icon: const Icon(FontAwesomeIcons.google, color: Colors.white),
       onPressed: () => context.read<LoginCubit>().logInWithGoogle(),
     );
@@ -150,7 +138,6 @@ class _SignUpButton extends StatelessWidget {
       onPressed: () => Navigator.of(context).push<void>(SignUpPage.route()),
       child: Text(
         'CREATE ACCOUNT',
-        style: TextStyle(color: theme.primaryColor),
       ),
     );
   }
