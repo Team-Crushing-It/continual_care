@@ -17,12 +17,26 @@ class SignUpPage extends StatelessWidget {
         title: const Text('Sign Up'),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8),
-        child: BlocProvider<SignUpCubit>(
-          create: (_) => SignUpCubit(context.read<AuthenticationRepository>()),
-          child: const SignUpForm(),
-        ),
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                  minWidth: constraints.maxWidth,
+                  minHeight: constraints.maxHeight),
+              child: IntrinsicHeight(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: BlocProvider<SignUpCubit>(
+                    create: (_) =>
+                        SignUpCubit(context.read<AuthenticationRepository>()),
+                    child: const SignUpForm(),
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }

@@ -20,28 +20,22 @@ class SignUpForm extends StatelessWidget {
             );
         }
       },
-      child: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.all(16),
-          height: MediaQuery.of(context).size.height / 1.2,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Image.asset(
+            'assets/logo_light.png',
+          ),
+          _RadioInput(),
+          Column(
             children: [
-              Image.asset(
-                'assets/logo_light.png',
-              ),
-              _RadioInput(),
-              Column(
-                children: [
-                  _EmailInput(),
-                  _PasswordInput(),
-                  _ConfirmPasswordInput(),
-                ],
-              ),
-              _SignUpButton(),
+              _EmailInput(),
+              _PasswordInput(),
+              _ConfirmPasswordInput(),
             ],
           ),
-        ),
+          _SignUpButton(),
+        ],
       ),
     );
   }
