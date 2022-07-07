@@ -20,19 +20,27 @@ class SignUpForm extends StatelessWidget {
             );
         }
       },
-      child: Align(
-        alignment: const Alignment(0, -1 / 3),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _EmailInput(),
-            const SizedBox(height: 8),
-            _PasswordInput(),
-            const SizedBox(height: 8),
-            _ConfirmPasswordInput(),
-            const SizedBox(height: 8),
-            _SignUpButton(),
-          ],
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image.asset(
+                'assets/logo_light.png',
+              ),
+              const SizedBox(height: 16),
+              _RadioInput(),
+              const SizedBox(height: 16),
+              _EmailInput(),
+              const SizedBox(height: 10),
+              _PasswordInput(),
+              const SizedBox(height: 10),
+              _ConfirmPasswordInput(),
+              const SizedBox(height: 16),
+              _SignUpButton(),
+            ],
+          ),
         ),
       ),
     );
@@ -120,17 +128,86 @@ class _SignUpButton extends StatelessWidget {
             : ElevatedButton(
                 key: const Key('signUpForm_continue_raisedButton'),
                 style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  primary: Colors.orangeAccent,
+                  shape: RoundedRectangleBorder(),
                 ),
                 onPressed: state.status.isValidated
                     ? () => context.read<SignUpCubit>().signUpFormSubmitted()
                     : null,
-                child: const Text('SIGN UP'),
+                child: const Text(
+                  'SIGN UP',
+                ),
               );
       },
+    );
+  }
+}
+
+enum RoleGroup { Client, Caregiver, Doctor }
+
+class _RadioInput extends StatefulWidget {
+  _RadioInput({Key? key}) : super(key: key);
+
+  @override
+  State<_RadioInput> createState() => _RadioInputState();
+}
+
+class _RadioInputState extends State<_RadioInput> {
+  RoleGroup _identifier = RoleGroup.Client;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text("Please Select"),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Radio(
+                    value: RoleGroup.Client,
+                    groupValue: _identifier,
+                    onChanged: (value) {
+                      setState(() {
+                        _identifier = RoleGroup.Client;
+                      });
+                    }),
+                Text("Client", style: TextStyle(color: Color(0xff7B809A))),
+              ],
+            ),
+            Row(
+              children: [
+                Radio(
+                    value: RoleGroup.Caregiver,
+                    groupValue: _identifier,
+                    onChanged: (value) {
+                      setState(() {
+                        _identifier = RoleGroup.Caregiver;
+                      });
+                    }),
+                Text("Caregiver", style: TextStyle(color: Color(0xff7B809A))),
+              ],
+            ),
+            Row(
+              children: [
+                Radio(
+                    value: RoleGroup.Doctor,
+                    groupValue: _identifier,
+                    onChanged: (value) {
+                      setState(() {
+                        _identifier = RoleGroup.Doctor;
+                      });
+                    }),
+                Text(
+                  "Doctor",
+                  style: TextStyle(color: Color(0xff7B809A)),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
