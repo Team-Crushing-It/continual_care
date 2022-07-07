@@ -33,9 +33,13 @@ class LoginForm extends StatelessWidget {
                 height: 120,
               ),
               const SizedBox(height: 16),
-              Padding(padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10), child: _EmailInput()),
+              Padding(
+                  padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                  child: _EmailInput()),
               const SizedBox(height: 8),
-              Padding(padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10), child: _PasswordInput()),
+              Padding(
+                  padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                  child: _PasswordInput()),
               const SizedBox(height: 42),
               _LoginButton(),
               const SizedBox(height: 32),
