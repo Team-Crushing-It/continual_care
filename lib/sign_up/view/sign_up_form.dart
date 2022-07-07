@@ -20,28 +20,22 @@ class SignUpForm extends StatelessWidget {
             );
         }
       },
-      child: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.all(16),
-          height: MediaQuery.of(context).size.height / 1.2,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Image.asset(
+            'assets/logo_light.png',
+          ),
+          _RadioInput(),
+          Column(
             children: [
-              Image.asset(
-                'assets/logo_light.png',
-              ),
-              _RadioInput(),
-              Column(
-                children: [
-                  _EmailInput(),
-                  _PasswordInput(),
-                  _ConfirmPasswordInput(),
-                ],
-              ),
-              _SignUpButton(),
+              _EmailInput(),
+              _PasswordInput(),
+              _ConfirmPasswordInput(),
             ],
           ),
-        ),
+          _SignUpButton(),
+        ],
       ),
     );
   }
@@ -159,10 +153,7 @@ class _RadioInputState extends State<_RadioInput> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          "Please Select",
-          style: TextStyle(fontSize: 16),
-        ),
+        Text("Please Select"),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -176,8 +167,7 @@ class _RadioInputState extends State<_RadioInput> {
                         _identifier = RoleGroup.Client;
                       });
                     }),
-                Text("Client",
-                    style: TextStyle(color: Color(0xff7B809A), fontSize: 16)),
+                Text("Client"),
               ],
             ),
             Row(
@@ -190,8 +180,7 @@ class _RadioInputState extends State<_RadioInput> {
                         _identifier = RoleGroup.Caregiver;
                       });
                     }),
-                Text("Caregiver",
-                    style: TextStyle(color: Color(0xff7B809A), fontSize: 16)),
+                Text("Caregiver"),
               ],
             ),
             Row(
@@ -204,10 +193,7 @@ class _RadioInputState extends State<_RadioInput> {
                         _identifier = RoleGroup.Doctor;
                       });
                     }),
-                Text(
-                  "Doctor",
-                  style: TextStyle(color: Color(0xff7B809A), fontSize: 16),
-                ),
+                Text("Doctor"),
               ],
             ),
           ],

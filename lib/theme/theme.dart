@@ -25,6 +25,9 @@ class FlutterTodosTheme {
           style: TextButton.styleFrom(primary: const Color(0xFF989898))
       ),
       scaffoldBackgroundColor: Colors.white,
+      textTheme: const TextTheme(
+        bodyText2: TextStyle(color: Color(0xFF353743), fontSize: 16)
+      ),
     );
   }
 
