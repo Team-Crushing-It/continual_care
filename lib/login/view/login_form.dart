@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:continual_care/login/login.dart';
 import 'package:continual_care/sign_up/sign_up.dart';
@@ -22,29 +23,31 @@ class LoginForm extends StatelessWidget {
             );
         }
       },
-      child: Align(
-        alignment: const Alignment(0, -1 / 3),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Image.asset(
+            'assets/logo_light.png',
+            height: 120,
+          ),
+          Column(
             children: [
-              Image.asset(
-                'assets/logo_light.png',
-                height: 120,
-              ),
-              const SizedBox(height: 16),
-              Padding(padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10), child: _EmailInput()),
-              const SizedBox(height: 8),
-              Padding(padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10), child: _PasswordInput()),
-              const SizedBox(height: 42),
-              _LoginButton(),
-              const SizedBox(height: 32),
-              _GoogleLoginButton(),
-              const SizedBox(height: 16),
-              _SignUpButton(),
+              _EmailInput(),
+              _PasswordInput(),
             ],
           ),
-        ),
+          Container(
+            height: 200,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _LoginButton(),
+                _GoogleLoginButton(),
+                _SignUpButton(),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
