@@ -20,19 +20,27 @@ class SignUpForm extends StatelessWidget {
             );
         }
       },
-      child: Align(
-        alignment: const Alignment(0, -1 / 3),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _EmailInput(),
-            const SizedBox(height: 8),
-            _PasswordInput(),
-            const SizedBox(height: 8),
-            _ConfirmPasswordInput(),
-            const SizedBox(height: 8),
-            _SignUpButton(),
-          ],
+      child: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.all(16),
+          height: MediaQuery.of(context).size.height / 1.2,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Image.asset(
+                'assets/logo_light.png',
+              ),
+              _RadioInput(),
+              Column(
+                children: [
+                  _EmailInput(),
+                  _PasswordInput(),
+                  _ConfirmPasswordInput(),
+                ],
+              ),
+              _SignUpButton(),
+            ],
+          ),
         ),
       ),
     );
@@ -50,7 +58,7 @@ class _EmailInput extends StatelessWidget {
           onChanged: (email) => context.read<SignUpCubit>().emailChanged(email),
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
-            labelText: 'email',
+            labelText: 'Email',
             helperText: '',
             errorText: state.email.invalid ? 'invalid email' : null,
           ),
@@ -72,7 +80,7 @@ class _PasswordInput extends StatelessWidget {
               context.read<SignUpCubit>().passwordChanged(password),
           obscureText: true,
           decoration: InputDecoration(
-            labelText: 'password',
+            labelText: 'Password',
             helperText: '',
             errorText: state.password.invalid ? 'invalid password' : null,
           ),
@@ -97,7 +105,7 @@ class _ConfirmPasswordInput extends StatelessWidget {
               .confirmedPasswordChanged(confirmPassword),
           obscureText: true,
           decoration: InputDecoration(
-            labelText: 'confirm password',
+            labelText: 'Confirm password',
             helperText: '',
             errorText: state.confirmedPassword.invalid
                 ? 'passwords do not match'
@@ -120,17 +128,91 @@ class _SignUpButton extends StatelessWidget {
             : ElevatedButton(
                 key: const Key('signUpForm_continue_raisedButton'),
                 style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  primary: Colors.orangeAccent,
+                  shape: RoundedRectangleBorder(),
                 ),
                 onPressed: state.status.isValidated
                     ? () => context.read<SignUpCubit>().signUpFormSubmitted()
                     : null,
-                child: const Text('SIGN UP'),
+                child: const Text(
+                  'SIGN UP',
+                ),
               );
       },
+    );
+  }
+}
+
+enum RoleGroup { Client, Caregiver, Doctor }
+
+class _RadioInput extends StatefulWidget {
+  _RadioInput({Key? key}) : super(key: key);
+
+  @override
+  State<_RadioInput> createState() => _RadioInputState();
+}
+
+class _RadioInputState extends State<_RadioInput> {
+  RoleGroup _identifier = RoleGroup.Client;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Please Select",
+          style: TextStyle(fontSize: 16),
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Radio(
+                    value: RoleGroup.Client,
+                    groupValue: _identifier,
+                    onChanged: (value) {
+                      setState(() {
+                        _identifier = RoleGroup.Client;
+                      });
+                    }),
+                Text("Client",
+                    style: TextStyle(color: Color(0xff7B809A), fontSize: 16)),
+              ],
+            ),
+            Row(
+              children: [
+                Radio(
+                    value: RoleGroup.Caregiver,
+                    groupValue: _identifier,
+                    onChanged: (value) {
+                      setState(() {
+                        _identifier = RoleGroup.Caregiver;
+                      });
+                    }),
+                Text("Caregiver",
+                    style: TextStyle(color: Color(0xff7B809A), fontSize: 16)),
+              ],
+            ),
+            Row(
+              children: [
+                Radio(
+                    value: RoleGroup.Doctor,
+                    groupValue: _identifier,
+                    onChanged: (value) {
+                      setState(() {
+                        _identifier = RoleGroup.Doctor;
+                      });
+                    }),
+                Text(
+                  "Doctor",
+                  style: TextStyle(color: Color(0xff7B809A), fontSize: 16),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
