@@ -153,10 +153,7 @@ class _RadioInputState extends State<_RadioInput> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          "Please Select",
-          style: TextStyle(fontSize: 16),
-        ),
+        Text("Please Select"),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -170,8 +167,7 @@ class _RadioInputState extends State<_RadioInput> {
                         _identifier = RoleGroup.Client;
                       });
                     }),
-                Text("Client",
-                    style: TextStyle(color: Color(0xff7B809A), fontSize: 16)),
+                Text("Client"),
               ],
             ),
             Row(
@@ -184,8 +180,7 @@ class _RadioInputState extends State<_RadioInput> {
                         _identifier = RoleGroup.Caregiver;
                       });
                     }),
-                Text("Caregiver",
-                    style: TextStyle(color: Color(0xff7B809A), fontSize: 16)),
+                Text("Caregiver"),
               ],
             ),
             Row(
@@ -198,10 +193,7 @@ class _RadioInputState extends State<_RadioInput> {
                         _identifier = RoleGroup.Doctor;
                       });
                     }),
-                Text(
-                  "Doctor",
-                  style: TextStyle(color: Color(0xff7B809A), fontSize: 16),
-                ),
+                Text("Doctor"),
               ],
             ),
           ],
