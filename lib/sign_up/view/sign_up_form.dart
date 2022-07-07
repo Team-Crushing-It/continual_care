@@ -22,25 +22,23 @@ class SignUpForm extends StatelessWidget {
       },
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Image.asset(
-                'assets/logo_light.png',
-              ),
-              const SizedBox(height: 16),
-              _RadioInput(),
-              const SizedBox(height: 16),
-              _EmailInput(),
-              const SizedBox(height: 10),
-              _PasswordInput(),
-              const SizedBox(height: 10),
-              _ConfirmPasswordInput(),
-              const SizedBox(height: 16),
-              _SignUpButton(),
-            ],
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Image.asset(
+              'assets/logo_light.png',
+            ),
+            _RadioInput(),
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _EmailInput(),
+                _PasswordInput(),
+                _ConfirmPasswordInput(),
+              ],
+            ),
+            _SignUpButton(),
+          ],
         ),
       ),
     );
@@ -58,7 +56,7 @@ class _EmailInput extends StatelessWidget {
           onChanged: (email) => context.read<SignUpCubit>().emailChanged(email),
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
-            labelText: 'email',
+            labelText: 'Email',
             helperText: '',
             errorText: state.email.invalid ? 'invalid email' : null,
           ),
@@ -80,7 +78,7 @@ class _PasswordInput extends StatelessWidget {
               context.read<SignUpCubit>().passwordChanged(password),
           obscureText: true,
           decoration: InputDecoration(
-            labelText: 'password',
+            labelText: 'Password',
             helperText: '',
             errorText: state.password.invalid ? 'invalid password' : null,
           ),
@@ -105,7 +103,7 @@ class _ConfirmPasswordInput extends StatelessWidget {
               .confirmedPasswordChanged(confirmPassword),
           obscureText: true,
           decoration: InputDecoration(
-            labelText: 'confirm password',
+            labelText: 'Confirm password',
             helperText: '',
             errorText: state.confirmedPassword.invalid
                 ? 'passwords do not match'
