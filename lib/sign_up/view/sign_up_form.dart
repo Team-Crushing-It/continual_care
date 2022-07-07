@@ -30,7 +30,6 @@ class SignUpForm extends StatelessWidget {
             ),
             _RadioInput(),
             Column(
-              mainAxisSize: MainAxisSize.min,
               children: [
                 _EmailInput(),
                 _PasswordInput(),
