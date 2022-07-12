@@ -26,7 +26,7 @@ class SignUpPage extends StatelessWidget {
                   minHeight: constraints.maxHeight),
               child: IntrinsicHeight(
                 child: Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(36),
                   child: BlocProvider<SignUpCubit>(
                     create: (_) =>
                         SignUpCubit(context.read<AuthenticationRepository>()),

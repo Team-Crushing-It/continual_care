@@ -21,7 +21,7 @@ class LoginPage extends StatelessWidget {
                   minHeight: constraints.maxHeight),
               child: IntrinsicHeight(
                 child: Padding(
-                  padding: const EdgeInsets.all(16),
+                  padding: const EdgeInsets.all(36),
                   child: BlocProvider(
                     create: (_) =>
                         LoginCubit(context.read<AuthenticationRepository>()),
