@@ -75,7 +75,11 @@ class EditJobView extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
-              children: const [_TitleField(), _DescriptionField()],
+              children: const [
+                _PayField(),
+                _LocationField(),
+                _CaregiverField()
+              ],
             ),
           ),
         ),
@@ -84,20 +88,49 @@ class EditJobView extends StatelessWidget {
   }
 }
 
-class _TitleField extends StatelessWidget {
-  const _TitleField();
+class _PayField extends StatelessWidget {
+  const _PayField();
 
   @override
   Widget build(BuildContext context) {
     final state = context.watch<EditJobBloc>().state;
-    final hintText = state.initialJob?.title ?? '';
+    final hintText = state.initialJob?.pay ?? 0;
 
     return TextFormField(
-      key: const Key('editJobView_title_textFormField'),
-      initialValue: state.title,
+      key: const Key('editJobView_pay_textFormField'),
+      initialValue: state.pay.toString(),
       decoration: InputDecoration(
         enabled: !state.status.isLoadingOrSuccess,
-        labelText: 'l10n.editJobTitleLabel',
+        labelText: 'pay',
+        hintText: hintText.toString(),
+      ),
+      keyboardType: TextInputType.number,
+      maxLength: 50,
+      onChanged: (value) {
+        value.characters.length > 0
+            ? context
+                .read<EditJobBloc>()
+                .add(EditJobPayChanged(double.parse(value)))
+            : null;
+      },
+    );
+  }
+}
+
+class _LocationField extends StatelessWidget {
+  const _LocationField();
+
+  @override
+  Widget build(BuildContext context) {
+    final state = context.watch<EditJobBloc>().state;
+    final hintText = state.initialJob?.location ?? '';
+
+    return TextFormField(
+      key: const Key('editJobView_location_textFormField'),
+      initialValue: state.location,
+      decoration: InputDecoration(
+        enabled: !state.status.isLoadingOrSuccess,
+        labelText: 'location',
         hintText: hintText,
       ),
       maxLength: 50,
@@ -106,24 +139,23 @@ class _TitleField extends StatelessWidget {
         FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9\s]')),
       ],
       onChanged: (value) {
-        context.read<EditJobBloc>().add(EditJobTitleChanged(value));
+        context.read<EditJobBloc>().add(EditJobLocationChanged(value));
       },
     );
   }
 }
 
-class _DescriptionField extends StatelessWidget {
-  const _DescriptionField();
+class _CaregiverField extends StatelessWidget {
+  const _CaregiverField();
 
   @override
   Widget build(BuildContext context) {
-
     final state = context.watch<EditJobBloc>().state;
-    final hintText = state.initialJob?.description ?? '';
+    final hintText = state.initialJob?.caregiver ?? '';
 
     return TextFormField(
-      key: const Key('editJobView_description_textFormField'),
-      initialValue: state.description,
+      key: const Key('editJobView_caregiver_textFormField'),
+      initialValue: state.caregiver,
       decoration: InputDecoration(
         enabled: !state.status.isLoadingOrSuccess,
         labelText: 'l10n.editJobDescriptionLabel',
@@ -135,7 +167,7 @@ class _DescriptionField extends StatelessWidget {
         LengthLimitingTextInputFormatter(300),
       ],
       onChanged: (value) {
-        context.read<EditJobBloc>().add(EditJobDescriptionChanged(value));
+        context.read<EditJobBloc>().add(EditJobCaregiverChanged(value));
       },
     );
   }

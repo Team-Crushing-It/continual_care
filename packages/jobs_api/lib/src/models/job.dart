@@ -8,7 +8,8 @@ part 'job.g.dart';
 
 /// {@template job}
 /// A single job item.
-///
+//TODO: Update this
+/// //update
 /// Contains a [title], [description] and [id], in addition to a [isCompleted]
 /// flag.
 ///
@@ -25,33 +26,52 @@ class Job extends Equatable {
   /// {@macro job}
   Job({
     String? id,
-    required this.title,
-    this.description = '',
+    this.pay = 0,
+    DateTime? dateTime,
+    this.location = '',
+    this.caregiver = '',
+    this.link = '',
     this.isCompleted = false,
   })  : assert(
-          id == null || id.isNotEmpty,
+          id == null || id.isNotEmpty, // id: ''
           'id can not be null and should be empty',
         ),
-        id = id ?? const Uuid().v4();
+        id = id ?? const Uuid().v4(),
+        dateTime = dateTime ?? DateTime(1970);
 
   /// The unique identifier of the job.
   ///
   /// Cannot be empty.
   final String id;
 
-  /// The title of the job.
+  /// The pay of the job.
   ///
-  /// Note that the title may be empty.
-  final String title;
+  /// Note that the pay may be empty.
+  final double pay;
 
-  /// The description of the job.
+  /// The date and time of the job.
   ///
-  /// Defaults to an empty string.
-  final String description;
+  /// Note that the date may be empty.
+  final DateTime dateTime;
 
-  /// Whether the job is completed.
+  /// The location of the job.
   ///
-  /// Defaults to `false`.
+  /// Note that the location may be empty.
+  final String location;
+
+  /// The caregiver of the job.
+  ///
+  /// Note that the caregiver may be empty.
+  final String caregiver;
+
+  /// The link of the job.
+  ///
+  /// Note that the link may be empty.
+  final String link;
+
+  /// The bool of whether or not the job is done
+  ///
+  /// Note that the link may be empty.
   final bool isCompleted;
 
   /// Returns a copy of this job with the given values updated.
@@ -59,14 +79,20 @@ class Job extends Equatable {
   /// {@macro job}
   Job copyWith({
     String? id,
-    String? title,
-    String? description,
+    double? pay,
+    DateTime? dateTime,
+    String? location,
+    String? caregiver,
+    String? link,
     bool? isCompleted,
   }) {
     return Job(
       id: id ?? this.id,
-      title: title ?? this.title,
-      description: description ?? this.description,
+      pay: pay ?? this.pay,
+      dateTime: dateTime ?? this.dateTime,
+      location: location ?? this.location,
+      caregiver: caregiver ?? this.caregiver,
+      link: link ?? this.link,
       isCompleted: isCompleted ?? this.isCompleted,
     );
   }
@@ -78,5 +104,6 @@ class Job extends Equatable {
   JsonMap toJson() => _$JobToJson(this);
 
   @override
-  List<Object> get props => [id, title, description, isCompleted];
+  List<Object> get props =>
+      [id, pay, dateTime, location, caregiver, link, isCompleted];
 }

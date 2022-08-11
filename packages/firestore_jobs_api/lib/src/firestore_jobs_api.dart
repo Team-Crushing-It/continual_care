@@ -35,16 +35,16 @@ class FirestoreJobsApi implements JobsApi {
   /// order to preserve the order they were added
   /// Else, we update the existing one
   @override
-  Future<void> saveJob(Job job) async {
-    final check = await jobsCollection.where('id', isEqualTo: job.id).get();
+  Future<void> saveJob(Job newJob) async {
+    final check = await jobsCollection.where('id', isEqualTo: newJob.id).get();
 
     if (check.docs.isEmpty) {
       // final output =
       //     job.copyWith(id: Timestamp.now().millisecondsSinceEpoch.toString());
-      await jobsCollection.add(job);
+      await jobsCollection.add(newJob);
     } else {
       final currentJobId = check.docs[0].reference.id;
-      await jobsCollection.doc(currentJobId).update(job.toJson());
+      await jobsCollection.doc(currentJobId).update(newJob.toJson());
     }
   }
 

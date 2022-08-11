@@ -7,22 +7,58 @@ abstract class EditJobEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class EditJobTitleChanged extends EditJobEvent {
-  const EditJobTitleChanged(this.title);
+class EditJobPayChanged extends EditJobEvent {
+  const EditJobPayChanged(this.pay);
 
-  final String title;
+  final double pay;
 
   @override
-  List<Object> get props => [title];
+  List<Object> get props => [pay];
 }
 
-class EditJobDescriptionChanged extends EditJobEvent {
-  const EditJobDescriptionChanged(this.description);
+class EditJobDateTimeChanged extends EditJobEvent {
+  const EditJobDateTimeChanged(this.dateTime);
 
-  final String description;
+  final DateTime dateTime;
 
   @override
-  List<Object> get props => [description];
+  List<Object> get props => [dateTime];
+}
+
+class EditJobLocationChanged extends EditJobEvent {
+  const EditJobLocationChanged(this.location);
+
+  final String location;
+
+  @override
+  List<Object> get props => [location];
+}
+
+class EditJobCaregiverChanged extends EditJobEvent {
+  const EditJobCaregiverChanged(this.caregiver);
+
+  final String caregiver;
+
+  @override
+  List<Object> get props => [caregiver];
+}
+
+class EditJobLinkChanged extends EditJobEvent {
+  const EditJobLinkChanged(this.link);
+
+  final String link;
+
+  @override
+  List<Object> get props => [link];
+}
+
+class EditJobisCompletedChanged extends EditJobEvent {
+  const EditJobisCompletedChanged(this.isCompleted);
+
+  final bool isCompleted;
+
+  @override
+  List<Object> get props => [isCompleted];
 }
 
 class EditJobSubmitted extends EditJobEvent {

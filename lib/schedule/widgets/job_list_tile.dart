@@ -36,7 +36,7 @@ class JobListTile extends StatelessWidget {
       child: ListTile(
         onTap: onTap,
         title: Text(
-          job.title,
+          job.location,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           style: !job.isCompleted
@@ -47,7 +47,7 @@ class JobListTile extends StatelessWidget {
                 ),
         ),
         subtitle: Text(
-          job.description,
+          job.caregiver,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
