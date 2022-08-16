@@ -3,26 +3,27 @@ import 'package:bloc/bloc.dart';
 
 class AppBlocObserver extends BlocObserver {
   @override
-  void onEvent(Bloc bloc, Object? event) {
-    super.onEvent(bloc, event);
-    print(event);
+  void onChange(BlocBase bloc, Change change) {
+    super.onChange(bloc, change);
+    // ignore: lines_longer_than_80_chars
+    print('onChange: ${bloc.runtimeType},\nCurrent state: ${change.currentState}\nNext state: ${change.nextState}');
   }
 
   @override
   void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
-    print(error);
+    print('onError(${bloc.runtimeType}, $error, $stackTrace)');
     super.onError(bloc, error, stackTrace);
   }
 
   @override
-  void onChange(BlocBase bloc, Change change) {
-    super.onChange(bloc, change);
-    print(change);
+  void onCreate(BlocBase bloc) {
+    print('onCreate(${bloc.state}, ${bloc.runtimeType})');
+    super.onCreate(bloc);
   }
 
   @override
-  void onTransition(Bloc bloc, Transition transition) {
-    super.onTransition(bloc, transition);
-    print(transition);
+  void onClose(BlocBase bloc) {
+    print('onClose(${bloc.state}, ${bloc.runtimeType})');
+    super.onClose(bloc);
   }
 }

@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
+import 'package:jobs_api/jobs_api.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
-import 'package:jobs_api/jobs_api.dart';
 import 'package:uuid/uuid.dart';
 
 part 'job.g.dart';
