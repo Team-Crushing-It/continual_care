@@ -151,15 +151,15 @@ class _CaregiverField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = context.watch<EditJobBloc>().state;
-    final hintText = state.initialJob?.caregiver ?? '';
+    final hintText = state.initialJob?.caregivers ?? '';
 
     return TextFormField(
       key: const Key('editJobView_caregiver_textFormField'),
-      initialValue: state.caregiver,
+      // initialValue: state.caregivers,
       decoration: InputDecoration(
         enabled: !state.status.isLoadingOrSuccess,
         labelText: 'l10n.editJobDescriptionLabel',
-        hintText: hintText,
+        hintText: 'hintText',
       ),
       maxLength: 300,
       maxLines: 7,
@@ -167,7 +167,7 @@ class _CaregiverField extends StatelessWidget {
         LengthLimitingTextInputFormatter(300),
       ],
       onChanged: (value) {
-        context.read<EditJobBloc>().add(EditJobCaregiverChanged(value));
+        // context.read<EditJobBloc>().add(EditJobCaregiverChanged(value));
       },
     );
   }

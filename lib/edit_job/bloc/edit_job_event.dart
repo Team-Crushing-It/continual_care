@@ -16,14 +16,24 @@ class EditJobPayChanged extends EditJobEvent {
   List<Object> get props => [pay];
 }
 
-class EditJobDateTimeChanged extends EditJobEvent {
-  const EditJobDateTimeChanged(this.dateTime);
+class EditJobStartTimeChanged extends EditJobEvent {
+  const EditJobStartTimeChanged(this.startTime);
 
-  final DateTime dateTime;
+  final DateTime startTime;
 
   @override
-  List<Object> get props => [dateTime];
+  List<Object> get props => [startTime];
 }
+
+class EditJobDurationChanged extends EditJobEvent {
+  const EditJobDurationChanged(this.duration);
+
+  final double duration;
+
+  @override
+  List<Object> get props => [duration];
+}
+
 
 class EditJobLocationChanged extends EditJobEvent {
   const EditJobLocationChanged(this.location);
@@ -34,14 +44,24 @@ class EditJobLocationChanged extends EditJobEvent {
   List<Object> get props => [location];
 }
 
-class EditJobCaregiverChanged extends EditJobEvent {
-  const EditJobCaregiverChanged(this.caregiver);
+class EditJobCoordinatorChanged extends EditJobEvent {
+  const EditJobCoordinatorChanged(this.coordinator);
 
-  final String caregiver;
+  final User coordinator;
 
   @override
-  List<Object> get props => [caregiver];
+  List<Object> get props => [coordinator];
 }
+
+class EditJobCaregiversChanged extends EditJobEvent {
+  const EditJobCaregiversChanged(this.caregivers);
+
+  final List<User> caregivers;
+
+  @override
+  List<Object> get props => [caregivers];
+}
+
 
 class EditJobLinkChanged extends EditJobEvent {
   const EditJobLinkChanged(this.link);

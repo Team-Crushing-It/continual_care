@@ -1,67 +1,86 @@
+import 'package:continual_care/schedule/schedule.dart';
+import 'package:continual_care/schedule/widgets/date_ios_format.dart';
+import 'package:continual_care/schedule/widgets/time_format.dart';
 import 'package:flutter/material.dart';
 import 'package:jobs_repository/jobs_repository.dart';
 
-class JobListTile extends StatelessWidget {
+class JobListTile extends StatefulWidget {
   const JobListTile({
     super.key,
     required this.job,
-    this.onToggleCompleted,
     this.onDismissed,
     this.onTap,
   });
 
   final Job job;
-  final ValueChanged<bool>? onToggleCompleted;
   final DismissDirectionCallback? onDismissed;
   final VoidCallback? onTap;
+
+  @override
+  State<JobListTile> createState() => _JobListTileState();
+}
+
+class _JobListTileState extends State<JobListTile> {
+  late DateTime endTime;
+  late bool hourly;
+
+  @override
+  void initState() {
+    hourly = widget.job.duration > 0 ? true : false;
+    if (hourly) {
+      endTime = widget.job.startTime
+          .add(Duration(hours: widget.job.duration.toInt()));
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final captionColor = theme.textTheme.caption?.color;
 
-    return Dismissible(
-      key: Key('jobListTile_dismissible_${job.id}'),
-      onDismissed: onDismissed,
-      direction: DismissDirection.endToStart,
-      background: Container(
-        alignment: Alignment.centerRight,
-        color: theme.colorScheme.error,
-        padding: const EdgeInsets.symmetric(horizontal: 16),
-        child: const Icon(
-          Icons.delete,
-          color: Color(0xAAFFFFFF),
-        ),
-      ),
-      child: ListTile(
-        onTap: onTap,
-        title: Text(
-          job.location,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: !job.isCompleted
-              ? null
-              : TextStyle(
-                  color: captionColor,
-                  decoration: TextDecoration.lineThrough,
+    return ListTile(
+      onTap: widget.onTap,
+      title: Column(
+        children: [
+          Row(
+            children: [
+              Text(
+                widget.job.startTime.dateIosFormat()!,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Text(
+                  hourly
+                      ? ' ${widget.job.startTime.timeFormat()!} - ${endTime.timeFormat()!} '
+                      : widget.job.startTime.timeFormat()!,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: captionColor,
+                  ),
                 ),
-        ),
-        subtitle: Text(
-          job.caregiver,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-        ),
-        leading: Checkbox(
-          shape: const ContinuousRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(8)),
+              ),
+            ],
           ),
-          value: job.isCompleted,
-          onChanged: onToggleCompleted == null
-              ? null
-              : (value) => onToggleCompleted!(value!),
-        ),
-        trailing: onTap == null ? null : const Icon(Icons.chevron_right),
+        ],
       ),
+      subtitle: Container(
+          decoration: ShapeDecoration(
+            shape: Border.all(
+              color: Colors.black,
+              width: 1.0,
+            ),
+          ),
+          child: Column(
+            children: [
+              IconText(icon: Icons.ac_unit, text: 'test'),
+              IconText(icon: Icons.ac_unit, text: 'test'),
+              IconText(icon: Icons.ac_unit, text: 'test')
+            ],
+          )),
     );
   }
 }

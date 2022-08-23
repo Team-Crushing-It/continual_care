@@ -34,10 +34,7 @@ class ScheduleView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Schedule'),
-        actions: const [
-          ScheduleFilterButton(),
-          ScheduleOptionsButton(),
-        ],
+        toolbarHeight: 50,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -112,19 +109,6 @@ class ScheduleView extends StatelessWidget {
                   for (final job in state.filteredJobs)
                     JobListTile(
                       job: job,
-                      onToggleCompleted: (isCompleted) {
-                        context.read<ScheduleBloc>().add(
-                              ScheduleJobCompletionToggled(
-                                job: job,
-                                isCompleted: isCompleted,
-                              ),
-                            );
-                      },
-                      onDismissed: (_) {
-                        context
-                            .read<ScheduleBloc>()
-                            .add(ScheduleJobDeleted(job));
-                      },
                       onTap: () {
                         Navigator.of(context).push(
                           EditJobPage.route(initialJob: job),

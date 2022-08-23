@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:jobs_api/jobs_api.dart';
 import 'package:jobs_repository/jobs_repository.dart';
 
 part 'edit_job_event.dart';
@@ -14,17 +15,21 @@ class EditJobBloc extends Bloc<EditJobEvent, EditJobState> {
           EditJobState(
             initialJob: initialJob,
             pay: initialJob?.pay ?? 0,
-            dateTime: initialJob?.dateTime ?? DateTime(1970),
+            startTime: initialJob?.startTime ?? DateTime(1970),
+            duration: initialJob?.duration ?? 0,
             location: initialJob?.location ?? '',
-            caregiver: initialJob?.caregiver ?? '',
+            coordinator: initialJob?.coordinator ?? User.empty,
+            caregivers: initialJob?.caregivers ?? [],
             link: initialJob?.link ?? '',
             isCompleted: initialJob?.isCompleted ?? false,
           ),
         ) {
     on<EditJobPayChanged>(_onPayChanged);
-    on<EditJobDateTimeChanged>(_onDateTimeChanged);
+    on<EditJobStartTimeChanged>(_onStartTimeChanged);
+    on<EditJobDurationChanged>(_onDurationChanged);
     on<EditJobLocationChanged>(_onLocationChanged);
-    on<EditJobCaregiverChanged>(_onCaregiverChanged);
+    on<EditJobCoordinatorChanged>(_onCoordinatorChanged);
+    on<EditJobCaregiversChanged>(_onCaregiversChanged);
     on<EditJobLinkChanged>(_onLinkChanged);
     on<EditJobisCompletedChanged>(_onisCompletedChanged);
     on<EditJobSubmitted>(_onSubmitted);
@@ -39,11 +44,18 @@ class EditJobBloc extends Bloc<EditJobEvent, EditJobState> {
     emit(state.copyWith(pay: event.pay));
   }
 
-  void _onDateTimeChanged(
-    EditJobDateTimeChanged event,
+  void _onStartTimeChanged(
+    EditJobStartTimeChanged event,
     Emitter<EditJobState> emit,
   ) {
-    emit(state.copyWith(dateTime: event.dateTime));
+    emit(state.copyWith(startTime: event.startTime));
+  }
+
+  void _onDurationChanged(
+    EditJobDurationChanged event,
+    Emitter<EditJobState> emit,
+  ) {
+    emit(state.copyWith(duration: event.duration));
   }
 
   void _onLocationChanged(
@@ -53,11 +65,18 @@ class EditJobBloc extends Bloc<EditJobEvent, EditJobState> {
     emit(state.copyWith(location: event.location));
   }
 
-  void _onCaregiverChanged(
-    EditJobCaregiverChanged event,
+  void _onCoordinatorChanged(
+    EditJobCoordinatorChanged event,
     Emitter<EditJobState> emit,
   ) {
-    emit(state.copyWith(caregiver: event.caregiver));
+    emit(state.copyWith(coordinator: event.coordinator));
+  }
+
+  void _onCaregiversChanged(
+    EditJobCaregiversChanged event,
+    Emitter<EditJobState> emit,
+  ) {
+    emit(state.copyWith(caregivers: event.caregivers));
   }
 
   void _onLinkChanged(
@@ -81,9 +100,10 @@ class EditJobBloc extends Bloc<EditJobEvent, EditJobState> {
     emit(state.copyWith(status: EditJobStatus.loading));
     final job = (state.initialJob ?? Job()).copyWith(
       pay: state.pay,
-      dateTime: state.dateTime,
+      startTime: state.startTime,
       location: state.location,
-      caregiver: state.caregiver,
+      coordinator: state.coordinator,
+      caregivers: state.caregivers,
       link: state.link,
       isCompleted: state.isCompleted,
     );

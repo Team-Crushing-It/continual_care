@@ -14,19 +14,23 @@ class EditJobState extends Equatable {
     this.status = EditJobStatus.initial,
     this.initialJob,
     this.pay = 0,
-    DateTime? dateTime,
+    DateTime? startTime,
+    this.duration = 0,
     this.location = '',
-    this.caregiver = '',
+    this.coordinator = User.empty,
+    this.caregivers = const [],
     this.link = '',
     this.isCompleted = false,
-  }) : this.dateTime = dateTime ?? DateTime(1970);
+  }) : this.startTime = startTime ?? DateTime(1970);
 
   final EditJobStatus status;
   final Job? initialJob;
   final double pay;
-  final DateTime dateTime;
+  final DateTime startTime;
+  final double duration;
   final String location;
-  final String caregiver;
+  final User coordinator;
+  final List<User> caregivers;
   final String link;
   final bool isCompleted;
 
@@ -36,9 +40,11 @@ class EditJobState extends Equatable {
     EditJobStatus? status,
     Job? initialJob,
     double? pay,
-    DateTime? dateTime,
+    DateTime? startTime,
+    double? duration,
     String? location,
-    String? caregiver,
+    User? coordinator,
+    List<User>? caregivers,
     String? link,
     bool? isCompleted,
   }) {
@@ -46,9 +52,11 @@ class EditJobState extends Equatable {
       status: status ?? this.status,
       initialJob: initialJob ?? this.initialJob,
       pay: pay ?? this.pay,
-      dateTime: dateTime ?? this.dateTime,
+      startTime: startTime ?? this.startTime,
+      duration: duration ?? this.duration,
       location: location ?? this.location,
-      caregiver: caregiver ?? this.caregiver,
+      coordinator: coordinator ?? this.coordinator,
+      caregivers: caregivers ?? this.caregivers,
       link: link ?? this.link,
       isCompleted: isCompleted ?? this.isCompleted,
     );
@@ -56,5 +64,5 @@ class EditJobState extends Equatable {
 
   @override
   List<Object?> get props =>
-      [status, initialJob, pay, dateTime, location, caregiver, link];
+      [status, initialJob, pay, startTime, duration, location, coordinator, caregivers, link];
 }
