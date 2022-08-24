@@ -70,9 +70,9 @@ class ScheduleView extends StatelessWidget {
                 ..hideCurrentSnackBar()
                 ..showSnackBar(
                   SnackBar(
-                    content: Text(' l10n.jobsOverviewJobDeletedSnackbarText'),
+                    content: Expanded(child: Text('Job Deleted')),
                     action: SnackBarAction(
-                      label: 'l10n.jobsOverviewUndoDeletionButtonText,',
+                      label: 'tap to undo,',
                       onPressed: () {
                         messenger.hideCurrentSnackBar();
                         context
@@ -107,16 +107,18 @@ class ScheduleView extends StatelessWidget {
               child: ListView(
                 children: [
                   for (final job in state.filteredJobs)
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: JobListTile(
-                        job: job,
-                        onTap: () {
-                          Navigator.of(context).push(
-                            EditJobPage.route(initialJob: job),
-                          );
-                        },
-                      ),
+                    JobListTile(
+                      job: job,
+                      onDismissed: (_) {
+                        context
+                            .read<ScheduleBloc>()
+                            .add(ScheduleJobDeleted(job));
+                      },
+                      onTap: () {
+                        Navigator.of(context).push(
+                          EditJobPage.route(initialJob: job),
+                        );
+                      },
                     ),
                 ],
               ),

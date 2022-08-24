@@ -39,58 +39,66 @@ class _JobListTileState extends State<JobListTile> {
     final theme = Theme.of(context);
     final captionColor = theme.textTheme.caption?.color;
 
-    return ListTile(
-      onTap: widget.onTap,
-      title: Column(
-        children: [
-          Row(
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Dismissible(
+        key: UniqueKey(),
+        onDismissed: widget.onDismissed,
+        direction: DismissDirection.endToStart,
+        child: ListTile(
+          onTap: widget.onTap,
+          title: Column(
             children: [
-              Text(
-                widget.job.startTime.dateIosFormat()!,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Text(
-                  hourly
-                      ? ' ${widget.job.startTime.timeFormat()!} - ${endTime.timeFormat()!} '
-                      : widget.job.startTime.timeFormat()!,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    color: captionColor,
+              Row(
+                children: [
+                  Text(
+                    widget.job.startTime.dateIosFormat()!,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text(
+                      hourly
+                          ? ' ${widget.job.startTime.timeFormat()!} - ${endTime.timeFormat()!} '
+                          : widget.job.startTime.timeFormat()!,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: captionColor,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-        ],
-      ),
-      subtitle: Container(
-        decoration: ShapeDecoration(
-          shape: Border.all(
-            color: Colors.black,
-            width: 1.0,
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(4),
-          child: Column(
-            children: [
-              IconText(
-                icon: Icons.person,
-                text: widget.job.client,
+          subtitle: Container(
+            decoration: ShapeDecoration(
+              shape: Border.all(
+                color: Colors.black,
+                width: 1.0,
               ),
-              IconText(
-                icon: Icons.location_on,
-                text: widget.job.location,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(4),
+              child: Column(
+                children: [
+                  IconText(
+                    icon: Icons.person,
+                    text: widget.job.client,
+                  ),
+                  IconText(
+                    icon: Icons.location_on,
+                    text: widget.job.location,
+                  ),
+                  IconText(
+                    icon: Icons.medical_information,
+                    text: widget.job.coordinator.email ?? '',
+                  )
+                ],
               ),
-              IconText(
-                icon: Icons.medical_information,
-                text: widget.job.coordinator.email ?? '',
-              )
-            ],
+            ),
           ),
         ),
       ),
