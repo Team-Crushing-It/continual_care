@@ -38,7 +38,7 @@ class User extends Equatable {
   final String? photo;
 
   /// Empty user which represents an unauthenticated user.
-  static const empty = User(id: '');
+  static const empty = User(id: '', name: '', email: '', photo: '');
 
   /// Convenience getter to determine whether the current user is empty.
   bool get isEmpty => this == User.empty;
@@ -47,5 +47,5 @@ class User extends Equatable {
   bool get isNotEmpty => this != User.empty;
 
   @override
-  List<Object?> get props => [email, id, name, photo];
+  List<Object?> get props => [id, email, name, photo];
 }

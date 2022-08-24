@@ -68,19 +68,32 @@ class _JobListTileState extends State<JobListTile> {
         ],
       ),
       subtitle: Container(
-          decoration: ShapeDecoration(
-            shape: Border.all(
-              color: Colors.black,
-              width: 1.0,
-            ),
+        decoration: ShapeDecoration(
+          shape: Border.all(
+            color: Colors.black,
+            width: 1.0,
           ),
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(4),
           child: Column(
             children: [
-              IconText(icon: Icons.ac_unit, text: 'test'),
-              IconText(icon: Icons.ac_unit, text: 'test'),
-              IconText(icon: Icons.ac_unit, text: 'test')
+              IconText(
+                icon: Icons.person,
+                text: widget.job.client,
+              ),
+              IconText(
+                icon: Icons.location_on,
+                text: widget.job.location,
+              ),
+              IconText(
+                icon: Icons.medical_information,
+                text: widget.job.coordinator.name!,
+              )
             ],
-          )),
+          ),
+        ),
+      ),
     );
   }
 }

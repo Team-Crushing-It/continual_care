@@ -22,17 +22,18 @@ part 'job.g.dart';
 /// respectively.
 /// {@endtemplate}
 @immutable
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Job extends Equatable {
   /// {@macro job}
   Job({
     String? id,
+    this.client = '',
     this.pay = 0,
     DateTime? startTime,
     this.duration = 0,
     this.location = '',
     this.coordinator = User.empty,
-    this.caregivers = const [],
+    this.caregivers = const [User.empty],
     this.link = '',
     this.isCompleted = false,
   })  : assert(
@@ -46,6 +47,11 @@ class Job extends Equatable {
   ///
   /// Cannot be empty.
   final String id;
+
+  /// The client for the job
+  ///
+  /// Cannot be empty.
+  final String client;
 
   /// The pay of the job.
   ///
@@ -92,6 +98,7 @@ class Job extends Equatable {
   /// {@macro job}
   Job copyWith({
     String? id,
+    String? client,
     double? pay,
     DateTime? startTime,
     double? duration,
@@ -103,6 +110,7 @@ class Job extends Equatable {
   }) {
     return Job(
       id: id ?? this.id,
+      client: client ?? this.client,
       pay: pay ?? this.pay,
       startTime: startTime ?? this.startTime,
       duration: duration ?? this.duration,
@@ -123,9 +131,10 @@ class Job extends Equatable {
   @override
   List<Object> get props => [
         id,
-        pay,
+        client,
         startTime,
         duration,
+        pay,
         location,
         coordinator,
         caregivers,

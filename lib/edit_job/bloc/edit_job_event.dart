@@ -7,6 +7,15 @@ abstract class EditJobEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class EditJobClientChanged extends EditJobEvent {
+  const EditJobClientChanged(this.client);
+
+  final String client;
+
+  @override
+  List<Object> get props => [client];
+}
+
 class EditJobPayChanged extends EditJobEvent {
   const EditJobPayChanged(this.pay);
 

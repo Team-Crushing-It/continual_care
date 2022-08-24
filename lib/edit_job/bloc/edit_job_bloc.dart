@@ -14,16 +14,23 @@ class EditJobBloc extends Bloc<EditJobEvent, EditJobState> {
         super(
           EditJobState(
             initialJob: initialJob,
-            pay: initialJob?.pay ?? 0,
             startTime: initialJob?.startTime ?? DateTime(1970),
             duration: initialJob?.duration ?? 0,
+            pay: initialJob?.pay ?? 0,
             location: initialJob?.location ?? '',
-            coordinator: initialJob?.coordinator ?? User.empty,
-            caregivers: initialJob?.caregivers ?? [],
+            coordinator: initialJob?.coordinator ??
+                User(
+                  id: '123',
+                  name: 'coordinator',
+                  email: '',
+                  photo: '',
+                ),
+            caregivers: initialJob?.caregivers ?? [User.empty],
             link: initialJob?.link ?? '',
             isCompleted: initialJob?.isCompleted ?? false,
           ),
         ) {
+    on<EditJobClientChanged>(_onClientChanged);
     on<EditJobPayChanged>(_onPayChanged);
     on<EditJobStartTimeChanged>(_onStartTimeChanged);
     on<EditJobDurationChanged>(_onDurationChanged);
@@ -36,6 +43,13 @@ class EditJobBloc extends Bloc<EditJobEvent, EditJobState> {
   }
 
   final JobsRepository _jobsRepository;
+
+  void _onClientChanged(
+    EditJobClientChanged event,
+    Emitter<EditJobState> emit,
+  ) {
+    emit(state.copyWith(client: event.client));
+  }
 
   void _onPayChanged(
     EditJobPayChanged event,
@@ -98,20 +112,23 @@ class EditJobBloc extends Bloc<EditJobEvent, EditJobState> {
     Emitter<EditJobState> emit,
   ) async {
     emit(state.copyWith(status: EditJobStatus.loading));
+
     final job = (state.initialJob ?? Job()).copyWith(
-      pay: state.pay,
       startTime: state.startTime,
+      duration: state.duration,
+      pay: state.pay,
       location: state.location,
       coordinator: state.coordinator,
       caregivers: state.caregivers,
       link: state.link,
       isCompleted: state.isCompleted,
     );
-
+    print('job: $job');
     try {
       await _jobsRepository.saveJob(job);
       emit(state.copyWith(status: EditJobStatus.success));
     } catch (e) {
+      print(e);
       emit(state.copyWith(status: EditJobStatus.failure));
     }
   }

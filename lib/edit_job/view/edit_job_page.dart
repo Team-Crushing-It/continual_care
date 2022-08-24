@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:continual_care/edit_job/edit_job.dart';
+import 'package:jobs_api/jobs_api.dart';
 import 'package:jobs_repository/jobs_repository.dart';
+import 'package:omni_datetime_picker/omni_datetime_picker.dart';
 
 class EditJobPage extends StatelessWidget {
   const EditJobPage({super.key});
@@ -76,14 +78,126 @@ class EditJobView extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             child: Column(
               children: const [
+                _ClientField(),
+                _DateField(),
+                _DurationField(),
                 _PayField(),
                 _LocationField(),
-                _CaregiverField()
+                _CaregiversField(),
+                _LinkField(),
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class _ClientField extends StatelessWidget {
+  const _ClientField();
+
+  @override
+  Widget build(BuildContext context) {
+    final state = context.watch<EditJobBloc>().state;
+    final hintText = state.initialJob?.client ?? '';
+
+    return TextFormField(
+      key: const Key('editJobView_client_textFormField'),
+      initialValue: state.client,
+      decoration: InputDecoration(
+        enabled: !state.status.isLoadingOrSuccess,
+        labelText: 'client',
+        hintText: hintText,
+      ),
+      inputFormatters: [
+        LengthLimitingTextInputFormatter(50),
+        FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9\s]')),
+      ],
+      onChanged: (value) {
+        context.read<EditJobBloc>().add(EditJobClientChanged(value));
+      },
+    );
+  }
+}
+
+class _DateField extends StatelessWidget {
+  const _DateField();
+
+  @override
+  Widget build(BuildContext context) {
+    final state = context.watch<EditJobBloc>().state;
+    final hintText = state.initialJob?.location ?? '';
+
+    return InkWell(
+      onTap: () async {
+        DateTime? newDateTime = await showOmniDateTimePicker(
+          context: context,
+          primaryColor: Colors.cyan,
+          backgroundColor: Colors.grey[900],
+          calendarTextColor: Colors.white,
+          tabTextColor: Colors.white,
+          unselectedTabBackgroundColor: Colors.grey[700],
+          buttonTextColor: Colors.white,
+          timeSpinnerTextStyle:
+              const TextStyle(color: Colors.white70, fontSize: 18),
+          timeSpinnerHighlightedTextStyle:
+              const TextStyle(color: Colors.white, fontSize: 24),
+          is24HourMode: false,
+          isShowSeconds: false,
+          startInitialDate: DateTime.now(),
+          startFirstDate: DateTime(1600).subtract(const Duration(days: 3652)),
+          startLastDate: DateTime.now().add(
+            const Duration(days: 3652),
+          ),
+          borderRadius: const Radius.circular(16),
+        );
+
+        context.read<EditJobBloc>().add(EditJobStartTimeChanged(newDateTime!));
+      },
+      child: AbsorbPointer(
+        child: TextFormField(
+          key: const Key('editJobView_date_textFormField'),
+          initialValue: state.startTime.toDateIosFormat(),
+          decoration: InputDecoration(
+            enabled: !state.status.isLoadingOrSuccess,
+            labelText: 'Date',
+            hintText: hintText,
+          ),
+          inputFormatters: [
+            LengthLimitingTextInputFormatter(50),
+            FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9\s]')),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _DurationField extends StatelessWidget {
+  const _DurationField();
+
+  @override
+  Widget build(BuildContext context) {
+    final state = context.watch<EditJobBloc>().state;
+    final hintText = state.initialJob?.duration ?? 0;
+
+    return TextFormField(
+      key: const Key('editJobView_pay_textFormField'),
+      initialValue: state.duration.toString(),
+      decoration: InputDecoration(
+        enabled: !state.status.isLoadingOrSuccess,
+        labelText: 'Duration',
+        hintText: hintText.toString(),
+      ),
+      keyboardType: TextInputType.number,
+      onChanged: (value) {
+        value.characters.length > 0
+            ? context
+                .read<EditJobBloc>()
+                .add(EditJobDurationChanged(double.parse(value)))
+            : null;
+      },
     );
   }
 }
@@ -98,14 +212,13 @@ class _PayField extends StatelessWidget {
 
     return TextFormField(
       key: const Key('editJobView_pay_textFormField'),
-      initialValue: state.pay.toString(),
+      initialValue: state.pay.toInt().toString(),
       decoration: InputDecoration(
         enabled: !state.status.isLoadingOrSuccess,
-        labelText: 'pay',
-        hintText: hintText.toString(),
+        labelText: 'Pay',
+        hintText: hintText.toInt().toString(),
       ),
       keyboardType: TextInputType.number,
-      maxLength: 50,
       onChanged: (value) {
         value.characters.length > 0
             ? context
@@ -133,7 +246,6 @@ class _LocationField extends StatelessWidget {
         labelText: 'location',
         hintText: hintText,
       ),
-      maxLength: 50,
       inputFormatters: [
         LengthLimitingTextInputFormatter(50),
         FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9\s]')),
@@ -145,29 +257,62 @@ class _LocationField extends StatelessWidget {
   }
 }
 
-class _CaregiverField extends StatelessWidget {
-  const _CaregiverField();
+class _CaregiversField extends StatelessWidget {
+  const _CaregiversField();
 
   @override
   Widget build(BuildContext context) {
     final state = context.watch<EditJobBloc>().state;
-    final hintText = state.initialJob?.caregivers ?? '';
+    final hintText = state.initialJob?.caregivers.first.name ?? '';
 
     return TextFormField(
-      key: const Key('editJobView_caregiver_textFormField'),
-      // initialValue: state.caregivers,
+      key: const Key('editJobView_caregivers_textFormField'),
+      initialValue: state.caregivers.first.id,
       decoration: InputDecoration(
         enabled: !state.status.isLoadingOrSuccess,
-        labelText: 'l10n.editJobDescriptionLabel',
-        hintText: 'hintText',
+        labelText: 'caregivers',
+        hintText: hintText,
       ),
-      maxLength: 300,
-      maxLines: 7,
       inputFormatters: [
-        LengthLimitingTextInputFormatter(300),
+        LengthLimitingTextInputFormatter(50),
+        FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9\s]')),
       ],
       onChanged: (value) {
-        // context.read<EditJobBloc>().add(EditJobCaregiverChanged(value));
+        context.read<EditJobBloc>().add(EditJobCaregiversChanged([
+              User(
+                id: 'test',
+                name: value,
+                email: '',
+                photo: '',
+              )
+            ]));
+      },
+    );
+  }
+}
+
+class _LinkField extends StatelessWidget {
+  const _LinkField();
+
+  @override
+  Widget build(BuildContext context) {
+    final state = context.watch<EditJobBloc>().state;
+    final hintText = state.initialJob?.link ?? '';
+
+    return TextFormField(
+      key: const Key('editJobView_link_textFormField'),
+      initialValue: state.location,
+      decoration: InputDecoration(
+        enabled: !state.status.isLoadingOrSuccess,
+        labelText: 'link',
+        hintText: hintText,
+      ),
+      inputFormatters: [
+        LengthLimitingTextInputFormatter(50),
+        FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z0-9\s]')),
+      ],
+      onChanged: (value) {
+        context.read<EditJobBloc>().add(EditJobLocationChanged(value));
       },
     );
   }

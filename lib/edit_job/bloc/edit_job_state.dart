@@ -13,18 +13,20 @@ class EditJobState extends Equatable {
   EditJobState({
     this.status = EditJobStatus.initial,
     this.initialJob,
+    this.client = '',
     this.pay = 0,
     DateTime? startTime,
     this.duration = 0,
     this.location = '',
     this.coordinator = User.empty,
-    this.caregivers = const [],
+    this.caregivers = const [User.empty],
     this.link = '',
     this.isCompleted = false,
   }) : this.startTime = startTime ?? DateTime(1970);
 
   final EditJobStatus status;
   final Job? initialJob;
+  final String? client;
   final double pay;
   final DateTime startTime;
   final double duration;
@@ -39,6 +41,7 @@ class EditJobState extends Equatable {
   EditJobState copyWith({
     EditJobStatus? status,
     Job? initialJob,
+    String? client,
     double? pay,
     DateTime? startTime,
     double? duration,
@@ -51,6 +54,7 @@ class EditJobState extends Equatable {
     return EditJobState(
       status: status ?? this.status,
       initialJob: initialJob ?? this.initialJob,
+      client: client ?? this.client,
       pay: pay ?? this.pay,
       startTime: startTime ?? this.startTime,
       duration: duration ?? this.duration,
@@ -63,6 +67,16 @@ class EditJobState extends Equatable {
   }
 
   @override
-  List<Object?> get props =>
-      [status, initialJob, pay, startTime, duration, location, coordinator, caregivers, link];
+  List<Object?> get props => [
+        status,
+        initialJob,
+        client,
+        pay,
+        startTime,
+        duration,
+        location,
+        coordinator,
+        caregivers,
+        link
+      ];
 }
