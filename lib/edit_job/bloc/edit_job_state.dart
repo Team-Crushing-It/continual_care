@@ -1,6 +1,6 @@
 part of 'edit_job_bloc.dart';
 
-enum EditJobStatus { initial, loading, success, failure }
+enum EditJobStatus { initial, updated, loading, success, failure }
 
 extension EditJobStatusX on EditJobStatus {
   bool get isLoadingOrSuccess => [

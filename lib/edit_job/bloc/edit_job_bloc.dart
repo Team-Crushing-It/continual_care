@@ -62,7 +62,7 @@ class EditJobBloc extends Bloc<EditJobEvent, EditJobState> {
     EditJobStartTimeChanged event,
     Emitter<EditJobState> emit,
   ) {
-    emit(state.copyWith(startTime: event.startTime));
+    emit(state.copyWith(status: EditJobStatus.updated, startTime: event.startTime));
   }
 
   void _onDurationChanged(

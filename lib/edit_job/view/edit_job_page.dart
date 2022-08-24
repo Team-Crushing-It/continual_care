@@ -127,7 +127,10 @@ class _DateField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = context.watch<EditJobBloc>().state;
+    final state2 = context.watch<EditJobBloc>().state.startTime;
     final hintText = state.initialJob?.location ?? '';
+
+    print('built dateField /n: ${state2}');
 
     return InkWell(
       onTap: () async {
@@ -157,8 +160,8 @@ class _DateField extends StatelessWidget {
       },
       child: AbsorbPointer(
         child: TextFormField(
-          key: const Key('editJobView_date_textFormField'),
-          initialValue: state.startTime.toDateIosFormat(),
+          // key: const Key('editJobView_date_textFormField'),
+          initialValue: state.startTime.toString(),
           decoration: InputDecoration(
             enabled: !state.status.isLoadingOrSuccess,
             labelText: 'Date',
