@@ -10,21 +10,18 @@ class EditJobBloc extends Bloc<EditJobEvent, EditJobState> {
   EditJobBloc({
     required JobsRepository jobsRepository,
     required Job? initialJob,
+    required User coordinator,
   })  : _jobsRepository = jobsRepository,
+        _coordinator = coordinator,
         super(
           EditJobState(
             initialJob: initialJob,
+            client: initialJob?.client ?? '',
             startTime: initialJob?.startTime ?? DateTime(1970),
             duration: initialJob?.duration ?? 0,
             pay: initialJob?.pay ?? 0,
             location: initialJob?.location ?? '',
-            coordinator: initialJob?.coordinator ??
-                User(
-                  id: '123',
-                  name: 'coordinator',
-                  email: '',
-                  photo: '',
-                ),
+            coordinator: initialJob?.coordinator ?? coordinator,
             caregivers: initialJob?.caregivers ?? [User.empty],
             link: initialJob?.link ?? '',
             isCompleted: initialJob?.isCompleted ?? false,
@@ -43,6 +40,7 @@ class EditJobBloc extends Bloc<EditJobEvent, EditJobState> {
   }
 
   final JobsRepository _jobsRepository;
+  final User _coordinator;
 
   void _onClientChanged(
     EditJobClientChanged event,
@@ -62,7 +60,8 @@ class EditJobBloc extends Bloc<EditJobEvent, EditJobState> {
     EditJobStartTimeChanged event,
     Emitter<EditJobState> emit,
   ) {
-    emit(state.copyWith(status: EditJobStatus.updated, startTime: event.startTime));
+    emit(state.copyWith(
+        status: EditJobStatus.updated, startTime: event.startTime));
   }
 
   void _onDurationChanged(
@@ -114,11 +113,12 @@ class EditJobBloc extends Bloc<EditJobEvent, EditJobState> {
     emit(state.copyWith(status: EditJobStatus.loading));
 
     final job = (state.initialJob ?? Job()).copyWith(
+      client: state.client,
       startTime: state.startTime,
       duration: state.duration,
       pay: state.pay,
       location: state.location,
-      coordinator: state.coordinator,
+      coordinator: _coordinator,
       caregivers: state.caregivers,
       link: state.link,
       isCompleted: state.isCompleted,

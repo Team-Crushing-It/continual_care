@@ -13,8 +13,11 @@ class IconText extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(icon),
-        Text(text),
+        Padding(
+          padding: const EdgeInsets.only(right: 4),
+          child: Icon(icon),
+        ),
+        Text(text, style: TextStyle(color: Colors.black)),
       ],
     );
   }

@@ -65,7 +65,6 @@ class ScheduleView extends StatelessWidget {
                 previous.lastDeletedJob != current.lastDeletedJob &&
                 current.lastDeletedJob != null,
             listener: (context, state) {
-              final deletedJob = state.lastDeletedJob!;
               final messenger = ScaffoldMessenger.of(context);
               messenger
                 ..hideCurrentSnackBar()
@@ -88,6 +87,7 @@ class ScheduleView extends StatelessWidget {
         ],
         child: BlocBuilder<ScheduleBloc, ScheduleState>(
           builder: (context, state) {
+            print('building schedule page');
             if (state.jobs.isEmpty) {
               if (state.status == ScheduleStatus.loading) {
                 return const Center(child: CupertinoActivityIndicator());
@@ -107,13 +107,16 @@ class ScheduleView extends StatelessWidget {
               child: ListView(
                 children: [
                   for (final job in state.filteredJobs)
-                    JobListTile(
-                      job: job,
-                      onTap: () {
-                        Navigator.of(context).push(
-                          EditJobPage.route(initialJob: job),
-                        );
-                      },
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: JobListTile(
+                        job: job,
+                        onTap: () {
+                          Navigator.of(context).push(
+                            EditJobPage.route(initialJob: job),
+                          );
+                        },
+                      ),
                     ),
                 ],
               ),
