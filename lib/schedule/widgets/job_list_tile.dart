@@ -24,20 +24,18 @@ class _JobListTileState extends State<JobListTile> {
   late DateTime endTime;
   late bool hourly;
 
-  @override
-  void initState() {
-    hourly = widget.job.duration > 0 ? true : false;
-    if (hourly) {
-      endTime = widget.job.startTime
-          .add(Duration(hours: widget.job.duration.toInt()));
-    }
-    super.initState();
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final captionColor = theme.textTheme.caption?.color;
+    hourly = widget.job.duration > 0 ? true : false;
+    print('hourly? : $hourly');
+    if (hourly) {
+      endTime = widget.job.startTime
+          .add(Duration(hours: widget.job.duration.toInt()));
+    }
 
     return Padding(
       padding: const EdgeInsets.all(8.0),

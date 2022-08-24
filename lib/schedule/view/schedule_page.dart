@@ -40,7 +40,7 @@ class ScheduleView extends StatelessWidget {
         onPressed: () {
           Navigator.of(context).push(EditJobPage.route());
         },
-        backgroundColor: Colors.blue,
+        backgroundColor: Color(0xFF2A3066),
         child: const Icon(Icons.add),
       ),
       body: MultiBlocListener(
@@ -87,7 +87,6 @@ class ScheduleView extends StatelessWidget {
         ],
         child: BlocBuilder<ScheduleBloc, ScheduleState>(
           builder: (context, state) {
-            print('building schedule page');
             if (state.jobs.isEmpty) {
               if (state.status == ScheduleStatus.loading) {
                 return const Center(child: CupertinoActivityIndicator());
