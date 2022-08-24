@@ -24,14 +24,22 @@ class _JobListTileState extends State<JobListTile> {
   late DateTime endTime;
   late bool hourly;
 
- 
+  @override
+  void initState() {
+    hourly = widget.job.duration > 0 ? true : false;
+    print('hourly? : $hourly');
+    if (hourly) {
+      endTime = widget.job.startTime
+          .add(Duration(hours: widget.job.duration.toInt()));
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final captionColor = theme.textTheme.caption?.color;
     hourly = widget.job.duration > 0 ? true : false;
-    print('hourly? : $hourly');
     if (hourly) {
       endTime = widget.job.startTime
           .add(Duration(hours: widget.job.duration.toInt()));
@@ -47,27 +55,30 @@ class _JobListTileState extends State<JobListTile> {
           onTap: widget.onTap,
           title: Column(
             children: [
-              Row(
-                children: [
-                  Text(
-                    widget.job.startTime.dateIosFormat()!,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Text(
-                      hourly
-                          ? ' ${widget.job.startTime.timeFormat()!} - ${endTime.timeFormat()!} '
-                          : widget.job.startTime.timeFormat()!,
+              Padding(
+                padding: const EdgeInsets.only(bottom: 4.0),
+                child: Row(
+                  children: [
+                    Text(
+                      widget.job.startTime.dateIosFormat()!,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: captionColor,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text(
+                        hourly
+                            ? ' ${widget.job.startTime.timeFormat()!} - ${endTime.timeFormat()!} '
+                            : widget.job.startTime.timeFormat()!,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          color: captionColor,
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ],
           ),
