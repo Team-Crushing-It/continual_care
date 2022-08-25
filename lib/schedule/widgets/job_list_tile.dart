@@ -3,6 +3,9 @@ import 'package:continual_care/schedule/widgets/date_ios_format.dart';
 import 'package:continual_care/schedule/widgets/time_format.dart';
 import 'package:flutter/material.dart';
 import 'package:jobs_repository/jobs_repository.dart';
+import 'package:intl/intl.dart';
+
+final oCcy = new NumberFormat("#,##0.00", "en_US");
 
 class JobListTile extends StatefulWidget {
   const JobListTile({
@@ -91,19 +94,33 @@ class _JobListTileState extends State<JobListTile> {
             ),
             child: Padding(
               padding: const EdgeInsets.all(4),
-              child: Column(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  IconText(
-                    icon: Icons.person,
-                    text: widget.job.client,
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      IconText(
+                        icon: Icons.person,
+                        text: widget.job.client,
+                      ),
+                      IconText(
+                        icon: Icons.location_on,
+                        text: widget.job.location,
+                      ),
+                      IconText(
+                        icon: Icons.medical_information,
+                        text: widget.job.coordinator.email ?? '',
+                      )
+                    ],
                   ),
-                  IconText(
-                    icon: Icons.location_on,
-                    text: widget.job.location,
-                  ),
-                  IconText(
-                    icon: Icons.medical_information,
-                    text: widget.job.coordinator.email ?? '',
+                  SizedBox(
+                    width: 120,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text('\$${oCcy.format(widget.job.pay)}',
+                          style: TextStyle(fontSize: 24, color: Colors.black)),
+                    ),
                   )
                 ],
               ),
