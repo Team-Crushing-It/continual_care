@@ -30,7 +30,6 @@ class _JobListTileState extends State<JobListTile> {
   @override
   void initState() {
     hourly = widget.job.duration > 0 ? true : false;
-    print('hourly? : $hourly');
     if (hourly) {
       endTime = widget.job.startTime
           .add(Duration(hours: widget.job.duration.toInt()));
@@ -119,7 +118,10 @@ class _JobListTileState extends State<JobListTile> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text('\$${oCcy.format(widget.job.pay)}',
-                          style: TextStyle(fontSize: 24, color: Colors.black)),
+                          style: TextStyle(
+                              fontSize: 24,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500)),
                     ),
                   )
                 ],

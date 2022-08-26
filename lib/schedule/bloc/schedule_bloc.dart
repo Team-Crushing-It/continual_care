@@ -10,7 +10,7 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
   ScheduleBloc({
     required JobsRepository jobsRepository,
   })  : _jobsRepository = jobsRepository,
-        super(const ScheduleState()) {
+        super(ScheduleState()) {
     on<ScheduleSubscriptionRequested>(_onSubscriptionRequested);
     on<ScheduleJobCompletionToggled>(_onJobCompletionToggled);
     on<ScheduleJobDeleted>(_onJobDeleted);
