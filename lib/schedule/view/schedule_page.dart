@@ -1,3 +1,4 @@
+import 'package:continual_care/schedule/widgets/schedule_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -102,25 +103,37 @@ class ScheduleView extends StatelessWidget {
               }
             }
 
-            return CupertinoScrollbar(
-              child: ListView(
-                children: [
-                  for (final job in state.filteredJobs)
-                    JobListTile(
-                      job: job,
-                      onDismissed: (_) {
-                        context
-                            .read<ScheduleBloc>()
-                            .add(ScheduleJobDeleted(job));
-                      },
-                      onTap: () {
-                        Navigator.of(context).push(
-                          EditJobPage.route(initialJob: job),
-                        );
-                      },
-                    ),
-                ],
-              ),
+            return Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: SchedulePicker(
+                    startTime: DateTime(2021, 12),
+                    endTime: DateTime(2022, 9),
+                  ),
+                ),
+                Expanded(
+                  flex: 4,
+                  child: ListView(
+                    children: [
+                      for (final job in state.filteredJobs)
+                        JobListTile(
+                          job: job,
+                          onDismissed: (_) {
+                            context
+                                .read<ScheduleBloc>()
+                                .add(ScheduleJobDeleted(job));
+                          },
+                          onTap: () {
+                            Navigator.of(context).push(
+                              EditJobPage.route(initialJob: job),
+                            );
+                          },
+                        ),
+                    ],
+                  ),
+                ),
+              ],
             );
           },
         ),
