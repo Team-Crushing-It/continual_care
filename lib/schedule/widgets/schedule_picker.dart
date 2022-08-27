@@ -5,9 +5,8 @@ import '../bloc/schedule_bloc.dart';
 import '../models/models.dart';
 
 class SchedulePicker extends StatefulWidget {
-  const SchedulePicker({Key? key, required this.startTime,required this.endTime}) : super(key: key);
-  final DateTime startTime;
-  final DateTime endTime;
+  const SchedulePicker({Key? key,}) : super(key: key);
+
   @override
   State<SchedulePicker> createState() => _SchedulePickerState();
 }
@@ -18,7 +17,7 @@ class _SchedulePickerState extends State<SchedulePicker> {
   @override
   void initState() {
     weeks = WeeksGenerator(
-            startTime: widget.startTime, endTime: widget.endTime)
+            startTime: DateTime.now().subtract(Duration(days: 182)), endTime: DateTime.now().add(Duration(days: 182)))
         .generate();
     tilesState = List.generate(weeks.length, (index) => false);
     super.initState();

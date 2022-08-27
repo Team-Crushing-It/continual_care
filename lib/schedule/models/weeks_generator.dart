@@ -26,14 +26,16 @@ class WeeksGenerator {
       DateTime LastDay = start;
       weeksList.add(daysList);
       if (FirstDay.month != LastDay.month) {
-        weeksList.add(DateFormat('MMMM').format(LastDay));
+        weeksList.add(DateFormat('MMM').format(LastDay));
       }
     }
-    return weeksList.reversed.toList();
+    return weeksList.toList();
   }
 }
 
 void main(List<String> args) {
-  WeeksGenerator(startTime: DateTime(2022, 5, 11), endTime: DateTime.now())
+  WeeksGenerator(
+          startTime: (DateTime.now().subtract(Duration(days: 365))),
+          endTime: DateTime.now().add(Duration(days: 365)))
       .generate();
 }

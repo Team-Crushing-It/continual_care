@@ -107,10 +107,7 @@ class ScheduleView extends StatelessWidget {
               children: [
                 Expanded(
                   flex: 1,
-                  child: SchedulePicker(
-                    startTime: DateTime(2021, 12),
-                    endTime: DateTime(2022, 9),
-                  ),
+                  child: SchedulePicker(),
                 ),
                 Expanded(
                   flex: 4,
