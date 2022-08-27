@@ -74,7 +74,9 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
     ScheduleFilterChanged event,
     Emitter<ScheduleState> emit,
   ) {
-    emit(state.copyWith(filter: () => event.filter));
+    emit(state.copyWith(
+        filterBegin: () => event.filterBegin,
+        filterEnd: () => event.filterEnd));
   }
 
   Future<void> _onToggleAllRequested(
