@@ -1,8 +1,7 @@
-import 'package:continual_care/schedule/widgets/week_list_tile.dart';
+import 'dart:isolate';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../bloc/schedule_bloc.dart';
-import '../models/models.dart';
+import 'package:intl/intl.dart';
 
 class SchedulePicker extends StatefulWidget {
   const SchedulePicker({
@@ -14,23 +13,21 @@ class SchedulePicker extends StatefulWidget {
 }
 
 class _SchedulePickerState extends State<SchedulePicker> {
-  late List<dynamic> weeks;
-  late List<bool> tilesState;
   late ScrollController _controller;
+  late DateTime nCurrent;
+  final isSelected = false;
+  var monthOffset = 0;
 
   @override
   void initState() {
-    weeks = WeeksGenerator(
-            startTime: DateTime.now().subtract(Duration(days: 182)),
-            endTime: DateTime.now().add(Duration(days: 182)))
-        .generate();
-    tilesState = List.generate(weeks.length, (index) => false);
+    final timeNow = DateTime.now();
+    nCurrent = timeNow.subtract(new Duration(days: timeNow.weekday - 1));
 
     _controller = ScrollController(initialScrollOffset: 1056);
 
 //  WidgetsBinding.instance
 //         .addPostFrameCallback((_) => animateToTile(1000));
-//     super.initState();
+    super.initState();
   }
 
   animateToTile(double pozish) {
@@ -52,40 +49,76 @@ class _SchedulePickerState extends State<SchedulePicker> {
       color: Color(0xffF6E7E7),
       child: ListView.builder(
         controller: _controller,
-        itemExtent: 33,
-        itemCount: weeks.length,
+        // itemExtent: 33,
+        itemCount: 62,
         itemBuilder: ((context, index) {
+          /// Start from 1/2 year in the past, and
+          /// move every week from there
+          final startDate = nCurrent
+              .subtract(Duration(days: 26 * 7))
+              .add(Duration(days: index * 7));
 
-          
-          if (weeks[index] is List) {
-            tilesState.add(false);
-            WeekListTile tile = WeekListTile(
-              isActive: tilesState[index],
-              index: index,
-              text: weeks[index][0].day.toString() +
-                  " - " +
-                  weeks[index][1].day.toString(),
-              onPressed: () {
-                animateToTile(index*33);
-                context.read<ScheduleBloc>().add(
-                    ScheduleFilterChanged(weeks[index][0], weeks[index][1]));
+          final endDate = startDate.add(Duration(days: 7));
+          var isMonth = false;
 
-                setState(() {
-                  tilesState = tilesState.map((e) => false).toList();
-                  tilesState[index] = true;
-                });
-              },
-            );
-            return tile;
-          } else {
-            return WeekListTile(
-              text: weeks[index],
-              onPressed: () {},
-              isActive: false,
-              isTitle: true,
-            );
+          /// if end date is at the beginning of a month,
+          /// (less than seven days into it)
+          /// then display the month in a tile
+
+          if (endDate.day < 8) {
+            isMonth = true;
           }
+
+          /// Else just return a normal List Tile
+          return WeekListTile(
+            isMonth: isMonth,
+            startDate: startDate,
+            endDate: endDate,
+            isSelected: false,
+            onPressed: () {},
+          );
         }),
+      ),
+    );
+  }
+}
+
+class WeekListTile extends StatelessWidget {
+  const WeekListTile(
+      {Key? key,
+      required this.isMonth,
+      required this.startDate,
+      required this.endDate,
+      required this.isSelected,
+      required this.onPressed})
+      : super(key: key);
+
+  final bool isMonth;
+  final DateTime startDate;
+  final DateTime endDate;
+  final bool isSelected;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final output = '${startDate.day} - ${endDate.day}';
+    if (isMonth) {
+      return Column(children: [
+        Container(
+          height: 33,
+          child: Text(DateFormat('MMM').format(endDate)),
+        ),
+        Container(
+          height: 33,
+          child: Text(output),
+        ),
+      ]);
+    }
+
+    return Center(
+      child: Container(
+        height: 33,
+        child: Text(output),
       ),
     );
   }
