@@ -17,7 +17,16 @@ class IconText extends StatelessWidget {
           padding: const EdgeInsets.only(right: 4),
           child: Icon(icon),
         ),
-        Text(text, style: TextStyle(color: Colors.black)),
+        Container(
+          width: 170,
+          child: Text(
+            text,
+            style: TextStyle(color: Colors.black),
+            maxLines: 1,
+            overflow: TextOverflow.fade,
+            softWrap: false,
+          ),
+        ),
       ],
     );
   }

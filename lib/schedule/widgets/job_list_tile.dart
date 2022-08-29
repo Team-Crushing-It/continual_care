@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:jobs_repository/jobs_repository.dart';
 import 'package:intl/intl.dart';
 
-final oCcy = new NumberFormat("#,##0.00", "en_US");
+final oCcy = new NumberFormat("#,##0", "en_US");
 
 class JobListTile extends StatefulWidget {
   const JobListTile({
@@ -48,7 +48,7 @@ class _JobListTileState extends State<JobListTile> {
     }
 
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
       child: Dismissible(
         key: UniqueKey(),
         onDismissed: widget.onDismissed,
@@ -114,14 +114,16 @@ class _JobListTileState extends State<JobListTile> {
                     ],
                   ),
                   SizedBox(
-                    width: 120,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text('\$${oCcy.format(widget.job.pay)}',
-                          style: TextStyle(
-                              fontSize: 24,
-                              color: Colors.black,
-                              fontWeight: FontWeight.w500)),
+                    width: 70,
+                    child: Text(
+                      '\$${oCcy.format(widget.job.pay)}',
+                      style: TextStyle(
+                        fontSize: 24,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w500,
+                      ),
+                      overflow: TextOverflow.clip,
+                      maxLines: 1,
                     ),
                   )
                 ],

@@ -26,6 +26,7 @@ class _SchedulePickerState extends State<SchedulePicker> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: 40,
       padding: EdgeInsets.all(8),
       color: Color(0xffF6E7E7),
       child: ListView.builder(
