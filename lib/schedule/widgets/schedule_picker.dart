@@ -18,31 +18,26 @@ class SchedulePicker extends StatefulWidget {
 class _SchedulePickerState extends State<SchedulePicker> {
   late ScrollController _controller;
   late DateTime nCurrent;
-
   late DateTime cSelected;
-  var monthOffset = 0;
 
   @override
   void initState() {
     final timeNow = DateTime.now();
     nCurrent = timeNow.subtract(new Duration(days: timeNow.weekday - 1));
-
     _controller = ScrollController(initialScrollOffset: 350);
     cSelected = nCurrent;
-
-
     super.initState();
-  }
-
-  animateToTile(double pozish) {
-    _controller.animateTo(pozish,
-        duration: Duration(milliseconds: 500), curve: Curves.ease);
   }
 
   @override
   void dispose() {
     _controller.dispose();
     super.dispose();
+  }
+
+  animateToTile(double pozish) {
+    _controller.animateTo(pozish,
+        duration: Duration(milliseconds: 500), curve: Curves.ease);
   }
 
   @override
@@ -61,14 +56,12 @@ class _SchedulePickerState extends State<SchedulePicker> {
           final startDate = nCurrent
               .subtract(Duration(days: 7 * 10))
               .add(Duration(days: index * 7));
-
+          /// The end date for the filter
           final endDate = startDate.add(Duration(days: 6));
-
           /// this is for determining whether or not to display
           /// the month in the list
           var isMonth = false;
           final firstDate = nCurrent.subtract(Duration(days: 7 * 10));
-
           /// if end date is at the beginning of a month,
           /// (less than seven days into it)
           /// then display the month in a tile
@@ -82,13 +75,11 @@ class _SchedulePickerState extends State<SchedulePicker> {
             endDate: endDate,
             isSelected: startDate == cSelected,
             onPressed: () {
-
               /// Whenever this specific tile is selected, update
               /// the state of the widget, [cSelected]
               setState(() {
                 cSelected = startDate;
               });
-
               /// This offset is used to determine how many month
               /// tiles are in the way so that the scrollController
               /// can correctly land on the right place
@@ -97,18 +88,12 @@ class _SchedulePickerState extends State<SchedulePicker> {
               final offset = startDate.year > firstDate.year
                   ? (firstDate.month - startDate.month) + 12
                   : startDate.month - firstDate.month;
-
               // Animate to the position, knowing that each tile is 33px high
               animateToTile(
                 (33 * (index + offset)).toDouble(),
               );
-
               /// This updates the filter
-              /// If its a month tile, make the filter spread
-              /// for the whole month
-
-              //Call the bloc to update the filter
-
+              /// Calls the bloc to update the filter
               context.read<ScheduleBloc>().add(ScheduleFilterChanged(
                   filterBegin: startDate, filterEnd: endDate));
             },
