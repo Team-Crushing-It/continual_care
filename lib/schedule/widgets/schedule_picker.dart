@@ -1,6 +1,9 @@
 import 'dart:isolate';
 
+import 'package:continual_care/schedule/bloc/schedule_bloc.dart';
+import 'package:continual_care/schedule/schedule.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class SchedulePicker extends StatefulWidget {
@@ -15,7 +18,8 @@ class SchedulePicker extends StatefulWidget {
 class _SchedulePickerState extends State<SchedulePicker> {
   late ScrollController _controller;
   late DateTime nCurrent;
-  final isSelected = false;
+
+  late DateTime cSelected;
   var monthOffset = 0;
 
   @override
@@ -23,17 +27,17 @@ class _SchedulePickerState extends State<SchedulePicker> {
     final timeNow = DateTime.now();
     nCurrent = timeNow.subtract(new Duration(days: timeNow.weekday - 1));
 
-    _controller = ScrollController(initialScrollOffset: 1056);
+    _controller = ScrollController(initialScrollOffset: 350);
+    cSelected = nCurrent;
 
-//  WidgetsBinding.instance
-//         .addPostFrameCallback((_) => animateToTile(1000));
+
     super.initState();
   }
 
   animateToTile(double pozish) {
     print('onScrolld $pozish');
     _controller.animateTo(pozish,
-        duration: Duration(seconds: 1), curve: Curves.ease);
+        duration: Duration(milliseconds: 500), curve: Curves.ease);
   }
 
   @override
@@ -49,76 +53,63 @@ class _SchedulePickerState extends State<SchedulePicker> {
       color: Color(0xffF6E7E7),
       child: ListView.builder(
         controller: _controller,
-        // itemExtent: 33,
-        itemCount: 62,
+        physics: ClampingScrollPhysics(),
+        itemCount: 26,
         itemBuilder: ((context, index) {
-          /// Start from 1/2 year in the past, and
-          /// move every week from there
+          /// Start from 10 weeks in the past, and
+          /// with every iteration of index,
+          /// move one week up
           final startDate = nCurrent
-              .subtract(Duration(days: 26 * 7))
+              .subtract(Duration(days: 7 * 10))
               .add(Duration(days: index * 7));
 
           final endDate = startDate.add(Duration(days: 7));
+
+          /// this is for determining whether or not to display
+          /// the month in the list
           var isMonth = false;
+          final firstDate = nCurrent.subtract(Duration(days: 7 * 10));
 
           /// if end date is at the beginning of a month,
           /// (less than seven days into it)
           /// then display the month in a tile
-
           if (endDate.day < 8) {
             isMonth = true;
           }
-
-          /// Else just return a normal List Tile
           return WeekListTile(
+            key: Key('weekListTile_key${startDate.toString}'),
             isMonth: isMonth,
             startDate: startDate,
             endDate: endDate,
-            isSelected: false,
-            onPressed: () {},
+            isSelected: startDate == cSelected,
+            onPressed: () {
+
+              /// Whenever this specific tile is selected, update
+              /// the state of the widget, [cSelected]
+              setState(() {
+                cSelected = startDate;
+              });
+
+              /// This offset is used to determine how many month
+              /// tiles are in the way so that the scrollController
+              /// can correctly land on the right place
+              ///
+              /// if one moves onto the next year, the offset is corrected
+              final offset = startDate.year > firstDate.year
+                  ? (firstDate.month - startDate.month) + 12
+                  : startDate.month - firstDate.month;
+
+              // Animate to the position, knowing that each tile is 33px high
+              animateToTile(
+                (33 * (index + offset)).toDouble(),
+              );
+
+              //Call the bloc to update the filter
+              context.read<ScheduleBloc>().add(ScheduleFilterChanged(
+                  filterBegin: startDate, filterEnd: endDate));
+            },
           );
         }),
-      ),
-    );
-  }
-}
-
-class WeekListTile extends StatelessWidget {
-  const WeekListTile(
-      {Key? key,
-      required this.isMonth,
-      required this.startDate,
-      required this.endDate,
-      required this.isSelected,
-      required this.onPressed})
-      : super(key: key);
-
-  final bool isMonth;
-  final DateTime startDate;
-  final DateTime endDate;
-  final bool isSelected;
-  final VoidCallback onPressed;
-
-  @override
-  Widget build(BuildContext context) {
-    final output = '${startDate.day} - ${endDate.day}';
-    if (isMonth) {
-      return Column(children: [
-        Container(
-          height: 33,
-          child: Text(DateFormat('MMM').format(endDate)),
-        ),
-        Container(
-          height: 33,
-          child: Text(output),
-        ),
-      ]);
-    }
-
-    return Center(
-      child: Container(
-        height: 33,
-        child: Text(output),
       ),
     );
   }

@@ -38,7 +38,10 @@ class ScheduleUndoDeletionRequested extends ScheduleEvent {
 }
 
 class ScheduleFilterChanged extends ScheduleEvent {
-  const ScheduleFilterChanged(this.filterBegin, this.filterEnd);
+  const ScheduleFilterChanged({
+    required this.filterBegin,
+    required this.filterEnd,
+  });
 
   final DateTime filterBegin;
   final DateTime filterEnd;
