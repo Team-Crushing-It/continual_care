@@ -35,7 +35,6 @@ class _SchedulePickerState extends State<SchedulePicker> {
   }
 
   animateToTile(double pozish) {
-    print('onScrolld $pozish');
     _controller.animateTo(pozish,
         duration: Duration(milliseconds: 500), curve: Curves.ease);
   }
@@ -63,7 +62,7 @@ class _SchedulePickerState extends State<SchedulePicker> {
               .subtract(Duration(days: 7 * 10))
               .add(Duration(days: index * 7));
 
-          final endDate = startDate.add(Duration(days: 7));
+          final endDate = startDate.add(Duration(days: 6));
 
           /// this is for determining whether or not to display
           /// the month in the list
@@ -104,7 +103,12 @@ class _SchedulePickerState extends State<SchedulePicker> {
                 (33 * (index + offset)).toDouble(),
               );
 
+              /// This updates the filter
+              /// If its a month tile, make the filter spread
+              /// for the whole month
+
               //Call the bloc to update the filter
+
               context.read<ScheduleBloc>().add(ScheduleFilterChanged(
                   filterBegin: startDate, filterEnd: endDate));
             },
