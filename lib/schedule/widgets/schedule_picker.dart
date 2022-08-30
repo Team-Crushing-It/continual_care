@@ -44,7 +44,7 @@ class _SchedulePickerState extends State<SchedulePicker> {
       child: ListView.builder(
         controller: _controller,
         physics: ClampingScrollPhysics(),
-        itemCount: 26,
+        itemCount: 20,
         itemBuilder: ((context, index) {
           /// Start from 10 weeks in the past, and
           /// with every iteration of index,
