@@ -17,9 +17,11 @@ class SchedulePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ScheduleBloc(
-        jobsRepository: context.read<JobsRepository>(),
-      )..add(const ScheduleSubscriptionRequested()),
+      create: (context) 
+        => ScheduleBloc(
+          jobsRepository: context.read<JobsRepository>(),
+        )..add(const ScheduleSubscriptionRequested())
+      ,
       child: const ScheduleView(),
     );
   }

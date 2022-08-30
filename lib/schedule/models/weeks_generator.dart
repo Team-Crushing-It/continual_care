@@ -34,8 +34,6 @@ class WeeksGenerator {
 }
 
 void main(List<String> args) {
-  WeeksGenerator(
-          startTime: (DateTime.now().subtract(Duration(days: 365))),
-          endTime: DateTime.now().add(Duration(days: 365)))
-      .generate();
+  print(DateTime.now().weekday);
+
 }

@@ -10,8 +10,14 @@ class ScheduleState extends Equatable {
     this.lastDeletedJob,
     DateTime? filterBegin,
     DateTime? filterEnd,
-  })  : this.filterBegin = filterBegin ?? DateTime(1969),
-        this.filterEnd = filterEnd ?? DateTime(2023);
+  })  : this.filterBegin = filterBegin ??
+            DateTime(DateTime.now().year, DateTime.now().month,
+                    DateTime.now().day)
+                .subtract(new Duration(days: DateTime.now().weekday - 1)),
+        this.filterEnd = filterEnd ??
+            DateTime(DateTime.now().year, DateTime.now().month,
+                    DateTime.now().day)
+                .add(Duration(days: (DateTime.now().weekday - 8).abs()));
 
   final ScheduleStatus status;
   final List<Job> jobs;
@@ -52,5 +58,3 @@ class ScheduleState extends Equatable {
         filterEnd,
       ];
 }
-
-
