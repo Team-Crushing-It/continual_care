@@ -2,13 +2,10 @@ part of 'home_overview_cubit.dart';
 
 class HomeOverviewState extends Equatable {
   const HomeOverviewState({
-    this.job
+    this.job,
   });
 
   final Job? job;
-
-  @override
-  List<Object?> get props => [job];
 
   HomeOverviewState copyWith({
     Job? job,
@@ -17,4 +14,7 @@ class HomeOverviewState extends Equatable {
       job: job ?? this.job,
     );
   }
+
+  @override
+  List<Object?> get props => [job];
 }

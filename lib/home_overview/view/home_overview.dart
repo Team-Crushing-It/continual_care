@@ -18,7 +18,7 @@ class HomeOverviewPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => HomeOverviewCubit(
         repository: context.read<JobsRepository>(),
-        job: Job(),
+        job: Job(location: 'initial'),
       )..getUpcoming(),
       child: const HomeOverviewView(),
     );
@@ -30,7 +30,7 @@ class HomeOverviewView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final upcomingJob = context.read<HomeOverviewCubit>().state.job!;
+    final upcomingJob = context.watch<HomeOverviewCubit>().state.job!;
     return Scaffold(
       body: Column(
         children: [
