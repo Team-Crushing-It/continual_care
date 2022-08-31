@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:continual_care/schedule/schedule.dart';
@@ -10,7 +12,7 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
   ScheduleBloc({
     required JobsRepository jobsRepository,
   })  : _jobsRepository = jobsRepository,
-        super(const ScheduleState()) {
+        super(ScheduleState()) {
     on<ScheduleSubscriptionRequested>(_onSubscriptionRequested);
     on<ScheduleJobCompletionToggled>(_onJobCompletionToggled);
     on<ScheduleJobDeleted>(_onJobDeleted);
@@ -74,7 +76,9 @@ class ScheduleBloc extends Bloc<ScheduleEvent, ScheduleState> {
     ScheduleFilterChanged event,
     Emitter<ScheduleState> emit,
   ) {
-    emit(state.copyWith(filter: () => event.filter));
+    emit(state.copyWith(
+        filterBegin: () => event.filterBegin,
+        filterEnd: () => event.filterEnd));
   }
 
   Future<void> _onToggleAllRequested(

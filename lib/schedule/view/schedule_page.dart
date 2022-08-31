@@ -1,3 +1,4 @@
+import 'package:continual_care/schedule/widgets/schedule_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,9 +17,11 @@ class SchedulePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ScheduleBloc(
-        jobsRepository: context.read<JobsRepository>(),
-      )..add(const ScheduleSubscriptionRequested()),
+      create: (context) 
+        => ScheduleBloc(
+          jobsRepository: context.read<JobsRepository>(),
+        )..add(const ScheduleSubscriptionRequested())
+      ,
       child: const ScheduleView(),
     );
   }
@@ -34,16 +37,13 @@ class ScheduleView extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Schedule'),
-        actions: const [
-          ScheduleFilterButton(),
-          ScheduleOptionsButton(),
-        ],
+        toolbarHeight: 50,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context).push(EditJobPage.route());
         },
-        backgroundColor: Colors.blue,
+        backgroundColor: Color(0xFF2A3066),
         child: const Icon(Icons.add),
       ),
       body: MultiBlocListener(
@@ -68,15 +68,14 @@ class ScheduleView extends StatelessWidget {
                 previous.lastDeletedJob != current.lastDeletedJob &&
                 current.lastDeletedJob != null,
             listener: (context, state) {
-              final deletedJob = state.lastDeletedJob!;
               final messenger = ScaffoldMessenger.of(context);
               messenger
                 ..hideCurrentSnackBar()
                 ..showSnackBar(
                   SnackBar(
-                    content: Text(' l10n.jobsOverviewJobDeletedSnackbarText'),
+                    content: Expanded(child: Text('Job Deleted')),
                     action: SnackBarAction(
-                      label: 'l10n.jobsOverviewUndoDeletionButtonText,',
+                      label: 'tap to undo,',
                       onPressed: () {
                         messenger.hideCurrentSnackBar();
                         context
@@ -106,33 +105,34 @@ class ScheduleView extends StatelessWidget {
               }
             }
 
-            return CupertinoScrollbar(
-              child: ListView(
-                children: [
-                  for (final job in state.filteredJobs)
-                    JobListTile(
-                      job: job,
-                      onToggleCompleted: (isCompleted) {
-                        context.read<ScheduleBloc>().add(
-                              ScheduleJobCompletionToggled(
-                                job: job,
-                                isCompleted: isCompleted,
-                              ),
+            return Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: SchedulePicker(),
+                ),
+                Expanded(
+                  flex: 4,
+                  child: ListView(
+                    children: [
+                      for (final job in state.filteredJobs)
+                        JobListTile(
+                          job: job,
+                          onDismissed: (_) {
+                            context
+                                .read<ScheduleBloc>()
+                                .add(ScheduleJobDeleted(job));
+                          },
+                          onTap: () {
+                            Navigator.of(context).push(
+                              EditJobPage.route(initialJob: job),
                             );
-                      },
-                      onDismissed: (_) {
-                        context
-                            .read<ScheduleBloc>()
-                            .add(ScheduleJobDeleted(job));
-                      },
-                      onTap: () {
-                        Navigator.of(context).push(
-                          EditJobPage.route(initialJob: job),
-                        );
-                      },
-                    ),
-                ],
-              ),
+                          },
+                        ),
+                    ],
+                  ),
+                ),
+              ],
             );
           },
         ),

@@ -38,12 +38,16 @@ class ScheduleUndoDeletionRequested extends ScheduleEvent {
 }
 
 class ScheduleFilterChanged extends ScheduleEvent {
-  const ScheduleFilterChanged(this.filter);
+  const ScheduleFilterChanged({
+    required this.filterBegin,
+    required this.filterEnd,
+  });
 
-  final JobsViewFilter filter;
+  final DateTime filterBegin;
+  final DateTime filterEnd;
 
   @override
-  List<Object> get props => [filter];
+  List<Object> get props => [filterBegin, filterEnd];
 }
 
 class ScheduleToggleAllRequested extends ScheduleEvent {

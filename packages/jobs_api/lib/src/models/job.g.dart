@@ -8,22 +8,33 @@ part of 'job.dart';
 
 Job _$JobFromJson(Map<String, dynamic> json) => Job(
       id: json['id'] as String?,
+      client: json['client'] as String? ?? '',
       pay: (json['pay'] as num?)?.toDouble() ?? 0,
-      dateTime: json['dateTime'] == null
+      startTime: json['startTime'] == null
           ? null
-          : DateTime.parse(json['dateTime'] as String),
+          : DateTime.parse(json['startTime'] as String),
+      duration: (json['duration'] as num?)?.toDouble() ?? 0,
       location: json['location'] as String? ?? '',
-      caregiver: json['caregiver'] as String? ?? '',
+      coordinator: json['coordinator'] == null
+          ? User.empty
+          : User.fromJson(json['coordinator'] as Map<String, dynamic>),
+      caregivers: (json['caregivers'] as List<dynamic>?)
+              ?.map((dynamic e) => User.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const [User.empty],
       link: json['link'] as String? ?? '',
       isCompleted: json['isCompleted'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$JobToJson(Job instance) => <String, dynamic>{
       'id': instance.id,
+      'client': instance.client,
       'pay': instance.pay,
-      'dateTime': instance.dateTime.toIso8601String(),
+      'startTime': instance.startTime.toIso8601String(),
+      'duration': instance.duration,
       'location': instance.location,
-      'caregiver': instance.caregiver,
+      'coordinator': instance.coordinator.toJson(),
+      'caregivers': instance.caregivers.map((e) => e.toJson()).toList(),
       'link': instance.link,
       'isCompleted': instance.isCompleted,
     };

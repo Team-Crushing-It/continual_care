@@ -10,6 +10,7 @@ dependencies:
   authentication_repository:
     path: packages/authentication_repository
   bloc: ^8.0.2
+  omni_datetime_picker: ^0.1.2
   equatable: ^2.0.3
   firestore_jobs_api:
     path: packages/firestore_jobs_api
@@ -30,6 +31,8 @@ dependencies:
   jobs_repository:
     path: packages/jobs_repository
   transparent_image: ^2.0.0
+  jiffy: ^5.0.0
+  firebase_core: ^1.21.1
 
 dev_dependencies:
   bloc_test: ^9.0.2

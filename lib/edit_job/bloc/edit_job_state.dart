@@ -1,6 +1,6 @@
 part of 'edit_job_bloc.dart';
 
-enum EditJobStatus { initial, loading, success, failure }
+enum EditJobStatus { initial, updated, loading, success, failure }
 
 extension EditJobStatusX on EditJobStatus {
   bool get isLoadingOrSuccess => [
@@ -13,20 +13,26 @@ class EditJobState extends Equatable {
   EditJobState({
     this.status = EditJobStatus.initial,
     this.initialJob,
+    this.client = '',
     this.pay = 0,
-    DateTime? dateTime,
+    DateTime? startTime,
+    this.duration = 0,
     this.location = '',
-    this.caregiver = '',
+    this.coordinator = User.empty,
+    this.caregivers = const [User.empty],
     this.link = '',
     this.isCompleted = false,
-  }) : this.dateTime = dateTime ?? DateTime(1970);
+  }) : this.startTime = startTime ?? DateTime(1970);
 
   final EditJobStatus status;
   final Job? initialJob;
+  final String? client;
   final double pay;
-  final DateTime dateTime;
+  final DateTime startTime;
+  final double duration;
   final String location;
-  final String caregiver;
+  final User coordinator;
+  final List<User> caregivers;
   final String link;
   final bool isCompleted;
 
@@ -35,26 +41,42 @@ class EditJobState extends Equatable {
   EditJobState copyWith({
     EditJobStatus? status,
     Job? initialJob,
+    String? client,
     double? pay,
-    DateTime? dateTime,
+    DateTime? startTime,
+    double? duration,
     String? location,
-    String? caregiver,
+    User? coordinator,
+    List<User>? caregivers,
     String? link,
     bool? isCompleted,
   }) {
     return EditJobState(
       status: status ?? this.status,
       initialJob: initialJob ?? this.initialJob,
+      client: client ?? this.client,
       pay: pay ?? this.pay,
-      dateTime: dateTime ?? this.dateTime,
+      startTime: startTime ?? this.startTime,
+      duration: duration ?? this.duration,
       location: location ?? this.location,
-      caregiver: caregiver ?? this.caregiver,
+      coordinator: coordinator ?? this.coordinator,
+      caregivers: caregivers ?? this.caregivers,
       link: link ?? this.link,
       isCompleted: isCompleted ?? this.isCompleted,
     );
   }
 
   @override
-  List<Object?> get props =>
-      [status, initialJob, pay, dateTime, location, caregiver, link];
+  List<Object?> get props => [
+        status,
+        initialJob,
+        client,
+        pay,
+        startTime,
+        duration,
+        location,
+        coordinator,
+        caregivers,
+        link
+      ];
 }

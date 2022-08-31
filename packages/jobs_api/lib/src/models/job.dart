@@ -3,6 +3,7 @@ import 'package:jobs_api/jobs_api.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:meta/meta.dart';
 import 'package:uuid/uuid.dart';
+import 'package:jobs_api/jobs_api.dart';
 
 part 'job.g.dart';
 
@@ -21,15 +22,18 @@ part 'job.g.dart';
 /// respectively.
 /// {@endtemplate}
 @immutable
-@JsonSerializable()
+@JsonSerializable(explicitToJson: true)
 class Job extends Equatable {
   /// {@macro job}
   Job({
     String? id,
+    this.client = '',
     this.pay = 0,
-    DateTime? dateTime,
+    DateTime? startTime,
+    this.duration = 0,
     this.location = '',
-    this.caregiver = '',
+    this.coordinator = User.empty,
+    this.caregivers = const [User.empty],
     this.link = '',
     this.isCompleted = false,
   })  : assert(
@@ -37,32 +41,47 @@ class Job extends Equatable {
           'id can not be null and should be empty',
         ),
         id = id ?? const Uuid().v4(),
-        dateTime = dateTime ?? DateTime(1970);
+        startTime = startTime ?? DateTime(1970);
 
   /// The unique identifier of the job.
   ///
   /// Cannot be empty.
   final String id;
 
+  /// The client for the job
+  ///
+  /// Cannot be empty.
+  final String client;
+
   /// The pay of the job.
   ///
   /// Note that the pay may be empty.
   final double pay;
 
-  /// The date and time of the job.
+  /// The start time of the job.
   ///
   /// Note that the date may be empty.
-  final DateTime dateTime;
+  final DateTime startTime;
+
+  /// The end time of the job.
+  ///
+  /// Note that the date may be empty.
+  final double duration;
 
   /// The location of the job.
   ///
   /// Note that the location may be empty.
   final String location;
 
-  /// The caregiver of the job.
+  /// The coordinator of the job.
+  ///
+  /// Note that the coordinator may be empty.
+  final User coordinator;
+
+  /// The caregivers of the job.
   ///
   /// Note that the caregiver may be empty.
-  final String caregiver;
+  final List<User> caregivers;
 
   /// The link of the job.
   ///
@@ -79,19 +98,25 @@ class Job extends Equatable {
   /// {@macro job}
   Job copyWith({
     String? id,
+    String? client,
     double? pay,
-    DateTime? dateTime,
+    DateTime? startTime,
+    double? duration,
     String? location,
-    String? caregiver,
+    User? coordinator,
+    List<User>? caregivers,
     String? link,
     bool? isCompleted,
   }) {
     return Job(
       id: id ?? this.id,
+      client: client ?? this.client,
       pay: pay ?? this.pay,
-      dateTime: dateTime ?? this.dateTime,
+      startTime: startTime ?? this.startTime,
+      duration: duration ?? this.duration,
       location: location ?? this.location,
-      caregiver: caregiver ?? this.caregiver,
+      coordinator: coordinator ?? this.coordinator,
+      caregivers: caregivers ?? this.caregivers,
       link: link ?? this.link,
       isCompleted: isCompleted ?? this.isCompleted,
     );
@@ -104,6 +129,16 @@ class Job extends Equatable {
   JsonMap toJson() => _$JobToJson(this);
 
   @override
-  List<Object> get props =>
-      [id, pay, dateTime, location, caregiver, link, isCompleted];
+  List<Object> get props => [
+        id,
+        client,
+        startTime,
+        duration,
+        pay,
+        location,
+        coordinator,
+        caregivers,
+        link,
+        isCompleted
+      ];
 }
