@@ -18,7 +18,7 @@ class HomeOverviewPage extends StatelessWidget {
     return BlocProvider(
       create: (context) => HomeOverviewCubit(
           repository: context.read<JobsRepository>(),
-          job: Job(location: 'somehweres'))
+          job: Job())
         ..getUpcoming(),
       child: const HomeOverviewView(),
     );
