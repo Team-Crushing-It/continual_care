@@ -13,6 +13,9 @@ class HomeOverviewCubit extends Cubit<HomeOverviewState> {
   final JobsRepository repository;
 
   void getUpcoming() async {
+
+    /// here is where you would filter/sort for the next job
+  
     print('get upcoming');
 
     final output = await repository.getJobs().first;
