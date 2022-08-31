@@ -13,10 +13,10 @@ class HomeOverviewCubit extends Cubit<HomeOverviewState> {
   final JobsRepository repository;
 
   void getUpcoming() async {
-    // final output = await repository.getJobs().first;
+    final output = await repository.getJobs().last;
 
     final output2 = Job(id: 'new', location: 'updated Jooooooooob');
 
-    emit(state.copyWith(job: output2));
+    emit(state.copyWith(job: output.first));
   }
 }
