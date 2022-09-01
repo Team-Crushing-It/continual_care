@@ -17,7 +17,7 @@ class EditJobBloc extends Bloc<EditJobEvent, EditJobState> {
           EditJobState(
             initialJob: initialJob,
             client: initialJob?.client ?? '',
-            startTime: initialJob?.startTime ?? DateTime(1970),
+            startTime: initialJob?.startTime ?? DateTime.now(),
             duration: initialJob?.duration ?? 0,
             pay: initialJob?.pay ?? 0,
             location: initialJob?.location ?? '',
