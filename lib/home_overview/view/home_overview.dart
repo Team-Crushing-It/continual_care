@@ -33,17 +33,60 @@ class HomeOverviewView extends StatelessWidget {
         appBar: AppBar(
           title: Text('Home Overview'),
         ),
-        body: BlocBuilder<HomeOverviewCubit, HomeOverviewState>(
-          builder: (context, state) {
-            return Column(
-              children: [
-                if (state.job != null)
-                  JobListTile(job: state.job!)
-                else
-                  Text("NO upcomming jobs")
-              ],
-            );
-          },
+        body: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                        margin: EdgeInsets.only(bottom: 16),
+                        padding: EdgeInsets.only(bottom: 4),
+                        width: double.maxFinite,
+                        child: Text(
+                          "Upcoming Job",
+                          style: TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.bold),
+                        ),
+                        decoration: BoxDecoration(
+                            border: Border(
+                                bottom: BorderSide(
+                                    width: 1, color: Color(0xff626262))))),
+                    BlocBuilder<HomeOverviewCubit, HomeOverviewState>(
+                      builder: (context, state) {
+                        if (state.job != null) {
+                          return JobListTile(job: state.job!);
+                        }
+                        return Center(child: Text("No upcomming jobs"));
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 16, bottom: 16, right: 2),
+              child: Column(
+                children: [
+                  IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.notifications,
+                        size: 32,
+                      )),
+                  IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.account_circle,
+                        size: 32,
+                      ))
+                ],
+              ),
+            )
+          ],
         ));
   }
 }
