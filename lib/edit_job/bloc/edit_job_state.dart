@@ -22,7 +22,7 @@ class EditJobState extends Equatable {
     this.caregivers = const [User.empty],
     this.link = '',
     this.isCompleted = false,
-  }) : this.startTime = startTime ?? DateTime(1970);
+  }) : this.startTime = startTime ?? DateTime.now();
 
   final EditJobStatus status;
   final Job? initialJob;

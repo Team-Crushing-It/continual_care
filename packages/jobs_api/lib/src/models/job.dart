@@ -41,7 +41,7 @@ class Job extends Equatable {
           'id can not be null and should be empty',
         ),
         id = id ?? const Uuid().v4(),
-        startTime = startTime ?? DateTime(1970);
+        startTime = startTime ?? DateTime.now();
 
   /// The unique identifier of the job.
   ///

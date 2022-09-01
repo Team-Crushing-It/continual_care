@@ -25,7 +25,7 @@ class FirestoreJobsApi implements JobsApi {
   /// a [Job]
   @override
   Stream<List<Job>> getJobs() {
-    return jobsCollection.orderBy('id').snapshots().map(
+    return jobsCollection.orderBy('startTime').snapshots().map(
           (snapshot) => snapshot.docs.map((e) => e.data()).toList(),
         );
   }
