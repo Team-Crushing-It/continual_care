@@ -29,6 +29,7 @@ class HomeOverviewView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('whole thing');
     return Scaffold(
         appBar: AppBar(
           title: Text('Home Overview'),
@@ -43,20 +44,26 @@ class HomeOverviewView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                        margin: EdgeInsets.only(bottom: 16),
-                        padding: EdgeInsets.only(bottom: 4),
-                        width: double.maxFinite,
-                        child: Text(
-                          "Upcoming Job",
-                          style: TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.bold),
+                      margin: EdgeInsets.only(bottom: 16),
+                      padding: EdgeInsets.only(bottom: 4),
+                      width: double.maxFinite,
+                      child: Text(
+                        "Upcoming Job",
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
+                      ),
+                      decoration: BoxDecoration(
+                        border: Border(
+                          bottom: BorderSide(
+                            width: 1,
+                            color: Color(0xff626262),
+                          ),
                         ),
-                        decoration: BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(
-                                    width: 1, color: Color(0xff626262))))),
+                      ),
+                    ),
                     BlocBuilder<HomeOverviewCubit, HomeOverviewState>(
                       builder: (context, state) {
+                        print('inBlocBuilder');
                         if (state.job != null) {
                           return JobListTile(job: state.job!);
                         }
